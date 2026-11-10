@@ -63,3 +63,11 @@ NaN/Infinity는 순수 계산에서는 IEEE 값으로 유지한다. HTTP JSON에
 패턴/advanced/outcomes/signals 성과 경로 24개를 이전했다. 원본 AdvancedPatternService는 같은 이름의 temporal similarity 메서드가 뒤에서 재정의되어 datetime 비교 경로가 실패한다. 대상은 datetime 근접도와 pattern duration 유사도를 별도 타입의 함수로 나누고 두 정상 패턴 비교를 회귀 검증한다. duration>=1h를 성공으로 세는 원본 고급 분석의 특이한 기준은 그대로 유지한다.
 
 수익이 있지만 손실이 없는 profit_factor 등 비유한 값은 내부 계산에서 유지하고 HTTP 응답에서 null로 정규화해 유효한 JSON으로 전달한다. 일부 DB 집계는 조회 후 JVM에서 계산하므로 큰 데이터셋에서는 원본과 메모리 사용량이 다르다. 테스트용 추적 API가 기존 결과를 교체하는 원본 부작용은 유지한다. H2와 격리 MySQL 8.0에서 추적 멱등성·수익률 갱신·패턴 외래키/DECIMAL 및 실제 HTTP 직렬화를 검증한다.
+
+## 기존 비동기 시세 API와 유틸리티
+
+`/api/v2/async` 3개 경로의 5분/10분 캐시와 배치 동시성 5를 유지했다. 원본 default_cache_manager는 LRU가 아니라 만료가 가장 빠른 값을 제거하는 메모리 캐시이므로 같은 정책을 사용한다. 별도 memory_cache.py의 LRU 통계와는 구분한다.
+
+단일 시세 경로는 원본 handler가 price/source를 반환해도 AsyncPriceResponse가 이를 버리고 current_price 등 optional 필드를 null로 출력한다. 이 기존 HTTP 계약을 보존하며 시세는 batch 또는 `/api/v2/market-price/current/{symbol}`에서 확인할 수 있다. 유틸리티 2개 경로는 반대로 required 필드가 다른 response_model 때문에 원본이 직렬화에 실패한다. 대상은 handler의 실제 signal_types/health 구조를 응답하도록 이 명백한 DTO 불일치를 수정했다. DB health는 실제 최근 1시간 신호 조회로 확인한다.
+
+필수 query/body 검증 오류는 HTTP 422 detail 배열로 통일한다. Pydantic과 JVM의 세부 오류 문구 차이는 남는다. 외부 오류에는 원본의 내부 예외 문자열 대신 일반 메시지를 사용한다.

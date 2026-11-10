@@ -2,6 +2,8 @@ package io.github.gihoon1123.market
 
 import org.springframework.dao.DataAccessException
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.HandlerMethodValidationException
@@ -9,6 +11,28 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @RestControllerAdvice
 class ApiExceptionHandler {
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    fun missingParameter(error: MissingServletRequestParameterException): ResponseEntity<Any> =
+        ResponseEntity.unprocessableContent().body(
+            mapOf(
+                "detail" to
+                    listOf(
+                        mapOf("loc" to listOf("query", error.parameterName), "msg" to "Field required", "type" to "missing"),
+                    ),
+            ),
+        )
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun invalidBody(error: MethodArgumentNotValidException): ResponseEntity<Any> =
+        ResponseEntity.unprocessableContent().body(
+            mapOf(
+                "detail" to
+                    error.bindingResult.fieldErrors.map {
+                        mapOf("loc" to listOf("body", it.field), "msg" to (it.defaultMessage ?: "Invalid value"), "type" to "value_error")
+                    },
+            ),
+        )
+
     @ExceptionHandler(ApiFailure::class)
     fun apiFailure(error: ApiFailure): ResponseEntity<Any> = ResponseEntity.status(error.code).body(mapOf("detail" to error.detail))
 
