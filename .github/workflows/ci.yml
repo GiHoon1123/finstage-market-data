@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        script: [test-mysql.sh, test-analysis-mysql.sh, test-operations-mysql.sh, test-recovery-mysql.sh]
+        script: [test-mysql.sh, test-analysis-mysql.sh, test-operations-mysql.sh, test-recovery-mysql.sh, test-ml-mysql.sh]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
