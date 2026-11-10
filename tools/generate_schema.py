@@ -8,7 +8,7 @@ from sqlalchemy.dialects import mysql
 from sqlalchemy.schema import CreateIndex, CreateTable
 
 root = Path(__file__).resolve().parents[1]
-source = root.parent / 'Finstage-Market-Data'
+source = root.parent / 'finstage-market-data-fastapi'
 metadata = sa.MetaData()
 namespace = {name:getattr(sa,name) for name in ['Column','Integer','BigInteger','String','Float','Boolean','Text','Date','DateTime','DECIMAL','Index','UniqueConstraint','ForeignKey','func']}
 namespace['datetime'] = datetime.datetime

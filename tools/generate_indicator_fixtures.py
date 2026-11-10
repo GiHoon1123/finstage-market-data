@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 root = Path(__file__).resolve().parents[1]
-source = root.parent / 'Finstage-Market-Data/app/technical_analysis/service/technical_indicator_service.py'
+source = root.parent / 'finstage-market-data-fastapi/app/technical_analysis/service/technical_indicator_service.py'
 tree = ast.parse(source.read_text())
 cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'TechnicalIndicatorService')
 for node in ast.walk(cls):

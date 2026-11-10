@@ -5,7 +5,7 @@ import json
 import subprocess
 from pathlib import Path
 
-source = Path(__file__).resolve().parents[2] / 'Finstage-Market-Data'
+source = Path(__file__).resolve().parents[2] / 'finstage-market-data-fastapi'
 root = Path(__file__).resolve().parents[1]
 files = sorted((source / 'app').rglob('*.py'))
 main = ast.parse((source / 'app/main.py').read_text())

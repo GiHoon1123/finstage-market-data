@@ -7,7 +7,7 @@ import typing
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 root = pathlib.Path(__file__).resolve().parents[2]
-source = root.parent / 'Finstage-Market-Data/app/news_crawler/service/sentiment_analyzer.py'
+source = root.parent / 'finstage-market-data-fastapi/app/news_crawler/service/sentiment_analyzer.py'
 parsed = ast.parse(source.read_text())
 klass = next(node for node in parsed.body if isinstance(node, ast.ClassDef))
 class QuietLogger:
