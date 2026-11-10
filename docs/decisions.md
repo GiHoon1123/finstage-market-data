@@ -103,3 +103,11 @@ Keras의 LSTM gate·dropout·BatchNorm·공통 Dense·7/14/30일 head를 DJL 0.3
 원본 pandas 특성 시계열·scaler와 합성 Keras 출력 대조, 실제 학습 loss/gradient·dropout·validation 조기종료, 모델 저장/복원·checksum 거절·5개 HTTP 경로·MySQL 저장을 검증했다. volume은 가격이 없는 날짜를 calendar join으로 추가해 float64로 승격되는 경우에만 float32로 바꾸고, 날짜가 완전한 int64 원본은 큰 거래량 정밀도를 유지한다. 서비스의 validation 분할을 callback에도 전달한다.
 
 기존 .keras/.pkl은 서비스가 직접 실행하지 않는다. 학습 당시 feature 순서가 있는 소유 파일을 명시적으로 JSON artifact로 변환할 수 있으며 절차·실제 검증·원본 차이는 tools/ml/README.md에 기록했다. 모든 기존 모델의 자동 호환이나 TensorFlow와 bit 단위로 같은 학습 결과를 주장하지 않는다. confidence는 원본과 같은 반복 추론 변동성 지표이며 보정된 성공 확률이 아니다. 원본의 전체 sequence scaler fit 후 분할에 따른 데이터 누수 한계도 기록했다.
+
+## 뉴스·번역·감정 분석·알림
+
+Yahoo/Investing RSS와 원문 SHA256 중복 검사·첫 기사 처리·300초 캐시·번역·저장·선택 알림을 이전했다. RSS XML은 외부 엔티티를 해석하지 않는다. 기본 Google 웹 번역은 원본 deep-translator와 같은 query/HTML selector 순서로 직접 요청하며, 테스트는 로컬 HTML 서버를 사용한다. 선택 translation.url HTTP adapter도 제공한다. 실패하면 원본처럼 빈 번역을 저장하며 감정 분석은 로컬에서 수행한다.
+
+금융 단어를 추가한 VADER 3.3.2 규칙·사전은 MIT 라이선스와 함께 Kotlin으로 이전했고 원본 서비스로 생성한 119개 문장의 수치와 대조했다. Python은 fixture 생성 도구에만 사용한다. Telegram은 communications.telegram.enabled=true와 base-url/token/chat-id가 있을 때만 발송하며 개발 검증에서는 로컬 서버만 사용한다. 성공 응답을 확인한 뒤 message_logs를 저장하고 최초 요청의 DB 초기화 누락을 수정했다. 원본 4096자 입력과 DB VARCHAR(1000) 충돌은 발송 전에 1000자 초과를 422로 거절한다.
+
+원본의 all-alerts가 없는 메서드를 호출하는 결함은 실제 알림 4개 유형으로 연결하고, ma/rsi/env-check의 DTO 불일치는 handler 응답 구조로 수정했다. 설정 존재 여부를 실제 자격증명 검증으로 표현하지 않는다. opt-in 뉴스 알림은 신규 기사를 커밋한 후 발송하며 발송 실패 때문에 기사를 롤백하거나 중복 재발송하지 않는다. 원본과 차이는 로컬 HTTP·RSS·실제 MySQL 회귀 테스트로 구분한다.
