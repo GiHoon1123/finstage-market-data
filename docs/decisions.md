@@ -27,3 +27,9 @@ MySQL 테이블과 컬럼은 원본 SQLAlchemy 선언을 기준으로 유지한�
 - 심볼 미등록은 원본 서비스가 None을 반환하고 라우터가 성공 응답으로 감싸므로 HTTP 200·data=null을 유지한다.
 - 입력 검증 HTTP 422와 detail 배열은 유지하되, JVM 검증 메시지와 Pydantic 오류 code의 세부 문구 차이는 존재한다.
 - DB 오류의 내부 SQL·연결 정보는 공개하지 않는다. 원본의 예외 문자열 반환과 달리 일반 메시지를 사용한다. 기존 스키마의 country NULL은 DB 선언대로 응답할 수 있고, 원본 SymbolResponse의 중복 country 선언은 별도 호환 한계다.
+
+## 지표 계산 검증
+
+원본 순수 TechnicalIndicatorService 클래스를 AST로 추출해 데코레이터만 제거하고 pandas 2.2.3·NumPy 2.2.5에서 실행했다. 상승·혼합·고정·짧은 데이터 4종 전체 시계열을 Kotlin과 비교한다. SMA warmup, 일반 EMA adjust=False, MACD adjust=True, 표본 표준편차 ddof=1, RSI 초기 delta=0을 유지한다. 캐시 데코레이터의 내부 객체 식별자 기반 동작은 계산 함수에 복제하지 않는다.
+
+NaN/Infinity는 순수 계산에서는 IEEE 값으로 유지한다. HTTP JSON에는 null로 내보낸다. 원본 FastAPI가 비유한 숫자를 직렬화하다 실패할 수 있는 구간과 명시적으로 다른 동작이며 허위 숫자를 만들지 않는다.

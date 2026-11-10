@@ -8,7 +8,7 @@
 
 - 공통 Spring MVC·Gradle·CI 구성: 완료, PR #1 CI 통과·병합
 - 회사 심볼·재무제표 조회: 구현, HTTP+H2 테스트 4개 및 격리 MySQL 8.0 테스트 4개 통과. 422 세부 오류 문구·원본 country NULL 처리 차이는 decisions.md 참고
-- 일봉 저장·기술적 지표: 예정
+- 일봉 저장: 예정. SMA·EMA·RSI·Bollinger·MACD·stochastic·VWAP와 신호 판정: 구현, 원본 pandas 시계열 표본 대조 통과
 - 패턴·신호·결과 추적·보고: 예정
 - ML·학습 모델·뉴스·감정 분석: 예정
 - 외부 데이터 수집·Telegram·스케줄러·WebSocket: 예정
