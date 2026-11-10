@@ -12,6 +12,7 @@ import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
 
 data class PriceHistory(
     val symbol: String,
@@ -41,13 +42,36 @@ data class PriceHistory(
 class MarketDataClient(
     private val mapper: JsonMapper,
     @Value("\${market.yahoo-base-url:https://query1.finance.yahoo.com}") private val baseUrl: String,
+    @Value("\${market.yahoo-retry-delay-ms:3000}") private val retryDelayMillis: Long = 3000,
 ) {
     private val http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build()
+    private val minuteCache = ConcurrentHashMap<String, Pair<Long, Double>>()
+
+    fun latestMinutePrice(
+        symbol: String,
+        ignoreCache: Boolean = false,
+    ): Double? {
+        val now = System.currentTimeMillis()
+        if (!ignoreCache) minuteCache[symbol]?.takeIf { now - it.first < 30000 }?.let { return it.second }
+        val chart = chart(symbol, mapOf("range" to "1d", "interval" to "1m"), rateLimitRetries = 3) ?: return null
+        val price =
+            chart
+                .path("indicators")
+                .path("quote")
+                .path(0)
+                .path("close")
+                .toList()
+                .lastOrNull { it.isNumber && it.asDouble().isFinite() }
+                ?.asDouble() ?: return null
+        minuteCache[symbol] = now to price
+        return price
+    }
 
     fun history(
         symbol: String,
         period: String,
         interval: String,
+        rateLimitRetries: Int = 0,
     ): PriceHistory? {
         val result =
             chart(
@@ -59,6 +83,7 @@ class MarketDataClient(
                     "range" to period,
                     "includePrePost" to "true",
                 ),
+                rateLimitRetries,
             )
                 ?: return null
         val timestamps = result.path("timestamp").toList().map { it.asLong() }
@@ -89,6 +114,7 @@ class MarketDataClient(
     internal fun chart(
         symbol: String,
         parameters: Map<String, String>,
+        rateLimitRetries: Int = 0,
     ): JsonNode? =
         try {
             val query = parameters.entries.joinToString("&") { "${encode(it.key)}=${encode(it.value)}" }
@@ -99,7 +125,13 @@ class MarketDataClient(
                     .timeout(Duration.ofSeconds(30))
                     .GET()
                     .build()
-            val response = http.send(request, HttpResponse.BodyHandlers.ofString())
+            var response = http.send(request, HttpResponse.BodyHandlers.ofString())
+            var retries = 0
+            while (response.statusCode() == 429 && retries < rateLimitRetries.coerceIn(0, 3)) {
+                Thread.sleep(retryDelayMillis.coerceAtLeast(0))
+                response = http.send(request, HttpResponse.BodyHandlers.ofString())
+                retries++
+            }
             if (response.statusCode() !=
                 200
             ) {

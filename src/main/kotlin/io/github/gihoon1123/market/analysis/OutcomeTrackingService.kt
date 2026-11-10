@@ -86,9 +86,9 @@ class OutcomeTrackingService(
         for (value in pending) {
             try {
                 val elapsed = Duration.between(LocalDateTime.parse(value["triggered_at"].toString()), utcNow()).toMillis() / 3600000.0
-                var price = market.current(value["symbol"].toString())
+                var price = market.latestMinutePrice(value["symbol"].toString())
                 if (enhanced && price == null) {
-                    repeat(2) { if (price == null) price = market.current(value["symbol"].toString()) }
+                    repeat(2) { if (price == null) price = market.latestMinutePrice(value["symbol"].toString()) }
                     if (price == null) price = value.number("current_price")
                 }
                 val fields = linkedMapOf<String, Any?>()

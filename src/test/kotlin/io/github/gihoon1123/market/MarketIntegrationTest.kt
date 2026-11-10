@@ -8,10 +8,13 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
+import org.springframework.http.MediaType
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.options
 import org.springframework.test.web.servlet.post
 import tools.jackson.databind.json.JsonMapper
 import java.net.InetSocketAddress
@@ -32,6 +35,13 @@ class MarketIntegrationTest {
             HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0).apply {
                 createContext("/v8/finance/chart/") { exchange ->
                     requests.add(exchange.requestURI.toASCIIString())
+                    val requested = exchange.requestURI.path.substringAfterLast('/')
+                    if (requested.startsWith("RATE_") && requests.count { "/$requested?" in it } <= 3) {
+                        exchange.sendResponseHeaders(429, -1)
+                        exchange.close()
+                        return@createContext
+                    }
+                    val points = if (exchange.requestURI.path.endsWith("/ONE")) 1 else 40
                     val json =
                         if (exchange.requestURI.path.endsWith("/MISSING")) {
                             """{"chart":{"result":null,"error":{"code":"Not Found"}}}"""
@@ -45,17 +55,17 @@ class MarketIntegrationTest {
                                                 listOf(
                                                     mapOf(
                                                         "meta" to mapOf("regularMarketPrice" to 200.5),
-                                                        "timestamp" to (0 until 40).map { 1700000000L + it * 86400L },
+                                                        "timestamp" to (0 until points).map { 1700000000L + it * 86400L },
                                                         "indicators" to
                                                             mapOf(
                                                                 "quote" to
                                                                     listOf(
                                                                         mapOf(
-                                                                            "open" to (0 until 40).map { 100.0 + it },
-                                                                            "high" to (0 until 40).map { 102.0 + it },
-                                                                            "low" to (0 until 40).map { 98.0 + it },
-                                                                            "close" to (0 until 40).map { 100.0 + it },
-                                                                            "volume" to (0 until 40).map { 1000.0 },
+                                                                            "open" to (0 until points).map { 100.0 + it },
+                                                                            "high" to (0 until points).map { 102.0 + it },
+                                                                            "low" to (0 until points).map { 98.0 + it },
+                                                                            "close" to (0 until points).map { 100.0 + it },
+                                                                            "volume" to (0 until points).map { 1000.0 },
                                                                         ),
                                                                     ),
                                                             ),
@@ -85,6 +95,175 @@ class MarketIntegrationTest {
     }
 
     @Autowired lateinit var mvc: MockMvc
+
+    @Autowired lateinit var jdbc: JdbcTemplate
+
+    @Autowired lateinit var market: MarketDataClient
+
+    @Test
+    fun `only synchronous Yahoo requests retry rate limits with a bounded policy`() {
+        val client = MarketDataClient(JsonMapper.builder().build(), "http://127.0.0.1:${server.address.port}", 0)
+        assertEquals(null, client.current("RATE_META"))
+        assertEquals(1, requests.count { "/RATE_META?" in it })
+        assertEquals(139.0, client.latestMinutePrice("RATE_QUOTE"))
+        assertEquals(4, requests.count { "/RATE_QUOTE?" in it })
+    }
+
+    @Test
+    fun `malformed JSON retains a validation response rather than Spring bad request envelope`() {
+        mvc
+            .post("/api/v2/technical-analysis/batch/indicators") {
+                contentType = MediaType.APPLICATION_JSON
+                content = "[broken"
+            }.andExpect {
+                status { isUnprocessableContent() }
+                jsonPath("$.detail[0].loc[0]") { value("body") }
+            }
+    }
+
+    @Test
+    fun `synchronous Yahoo minute quote remains distinct from async metadata price`() {
+        assertEquals(200.5, market.current("QUOTE"))
+        assertEquals(139.0, market.latestMinutePrice("QUOTE"))
+        assertEquals(139.0, market.latestMinutePrice("QUOTE"))
+        assertEquals(2, requests.count { "/QUOTE?" in it })
+    }
+
+    @Test
+    fun `one valid candle is available even when comprehensive analysis needs two`() {
+        mvc
+            .post("/api/v2/technical-analysis/batch/indicators") {
+                contentType = MediaType.APPLICATION_JSON
+                content = """["ONE"]"""
+            }.andExpect {
+                status { isOk() }
+                jsonPath("$.analyzed_symbols") { value(0) }
+            }
+        mvc
+            .post("/api/v2/technical-analysis/analysis/comprehensive") {
+                contentType = MediaType.APPLICATION_JSON
+                content = """["ONE"]"""
+            }.andExpect {
+                status { isOk() }
+                jsonPath("$.symbols_with_data") { value(1) }
+                jsonPath("$.results.ONE.data_available") { value(true) }
+            }
+    }
+
+    @Test
+    fun `browser CORS preflight preserves configured credential support`() {
+        mvc
+            .options("/api/v2/technical-analysis/prices/batch") {
+                header("Origin", "https://client.example")
+                header("Access-Control-Request-Method", "GET")
+            }.andExpect {
+                status { isOk() }
+                header { string("Access-Control-Allow-Origin", "https://client.example") }
+                header { string("Access-Control-Allow-Credentials", "true") }
+            }
+    }
+
+    @Test
+    fun `current technical status validates source timeframes and computes actual series`() {
+        mvc.get("/api/technical-analysis/signals/current-status/STATUS/15min").andExpect {
+            status { isOk() }
+            jsonPath("$.timeframe") { value("15min") }
+            jsonPath("$.current_price") { value(139.0) }
+            jsonPath("$.indicators.sma.5.39") { value(137.0) }
+        }
+        assertTrue(requests.any { "/STATUS?" in it && "range=5d" in it && "interval=15m" in it })
+        mvc.get("/api/technical-analysis/signals/current-status/STATUS/3hour").andExpect {
+            status { isBadRequest() }
+        }
+    }
+
+    @Test
+    fun `batch analysis returns source full moving average series and partial data counts`() {
+        mvc
+            .post("/api/v2/technical-analysis/batch/indicators?batch_size=2") {
+                contentType = MediaType.APPLICATION_JSON
+                content = """["AAPL","MISSING"]"""
+            }.andExpect {
+                status { isOk() }
+                jsonPath("$.requested_symbols") { value(2) }
+                jsonPath("$.analyzed_symbols") { value(1) }
+                jsonPath("$.results.AAPL.indicators.sma.5.39") { value(137.0) }
+                jsonPath("$.results.AAPL.indicators.sma.5.0") { doesNotExist() }
+                jsonPath("$.results.AAPL.signals.macd") { value("bullish") }
+            }
+        mvc
+            .post("/api/v2/technical-analysis/batch/indicators") {
+                contentType = MediaType.APPLICATION_JSON
+                content = """["MISSING"]"""
+            }.andExpect { status { isNotFound() } }
+    }
+
+    @Test
+    fun `price monitor compares stored snapshots and highs without inventing zero category alerts`() {
+        jdbc.execute(
+            "CREATE TABLE IF NOT EXISTS price_snapshots(symbol VARCHAR(10),close DECIMAL(12,4),high DECIMAL(12,4),low DECIMAL(12,4),snapshot_at TIMESTAMP)",
+        )
+        jdbc.execute(
+            "CREATE TABLE IF NOT EXISTS price_high_records(symbol VARCHAR(10),price DECIMAL(12,4),recorded_at TIMESTAMP,source VARCHAR(50))",
+        )
+        jdbc.update("DELETE FROM price_snapshots")
+        jdbc.update("DELETE FROM price_high_records")
+        jdbc.update("INSERT INTO price_snapshots VALUES ('MONITOR',200,220,180,CURRENT_TIMESTAMP)")
+        jdbc.update("INSERT INTO price_high_records VALUES ('MONITOR',190,CURRENT_TIMESTAMP,'test')")
+        mvc.get("/api/v2/technical-analysis/prices/monitor?symbols=MONITOR&alerts_only=true").andExpect {
+            status { isOk() }
+            jsonPath("$.monitored_symbols") { value(1) }
+            jsonPath("$.total_alerts") { value(1) }
+            jsonPath("$.results.MONITOR.alerts[0].type") { value("new_high") }
+            jsonPath("$.results.MONITOR.analysis.prev_close.change_percent") { value(0.25) }
+        }
+    }
+
+    @Test
+    fun `background analysis status is tied to a real submitted job`() {
+        val response =
+            mvc
+                .post("/api/v2/technical-analysis/analysis/background?symbols=AAPL&analysis_types=indicators")
+                .andExpect { status { isOk() } }
+                .andReturn()
+                .response.contentAsString
+        val id =
+            JsonMapper
+                .builder()
+                .build()
+                .readTree(response)
+                .path("task_id")
+                .asString()
+        val deadline = System.nanoTime() + 5_000_000_000L
+        var done = false
+        while (System.nanoTime() < deadline) {
+            val status =
+                mvc
+                    .get("/api/v2/technical-analysis/analysis/status/$id")
+                    .andReturn()
+                    .response.contentAsString
+            if (JsonMapper
+                    .builder()
+                    .build()
+                    .readTree(status)
+                    .path("status")
+                    .asString() == "completed"
+            ) {
+                done = true
+                break
+            }
+            Thread.sleep(10)
+        }
+        assertTrue(done)
+        mvc.get("/api/v2/technical-analysis/analysis/status/$id").andExpect {
+            jsonPath("$.progress") { value(100) }
+            jsonPath("$.result.task") { value("technical_analysis_batch") }
+            jsonPath("$.result.results.AAPL.indicators.success") { value(true) }
+        }
+        mvc.get("/api/v2/technical-analysis/analysis/status/unknown").andExpect {
+            jsonPath("$.status") { value("unknown") }
+        }
+    }
 
     @Test
     fun `legacy async price retains response model projection and caches source request`() {
