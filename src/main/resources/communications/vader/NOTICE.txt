@@ -1,0 +1,6 @@
+VADER Sentiment Analysis, Copyright (c) 2016 C.J. Hutto.
+Official upstream: https://github.com/cjhutto/vaderSentiment
+Lexicons and rule constants are from the official PyPI distribution vaderSentiment 3.3.2,
+matching the original Finstage requirements.txt. Used under the included MIT License.
+The Kotlin implementation in communications/VaderSentiment.kt ports the 3.3.2 scoring
+rules; tools/communications generates comparison fixtures using the Python reference.
