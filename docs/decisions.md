@@ -20,3 +20,10 @@ MySQL 테이블과 컬럼은 원본 SQLAlchemy 선언을 기준으로 유지한�
 
 - https://docs.spring.io/spring-framework/reference/data-access/jdbc/core.html
 - https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-validation.html
+
+## 회사 조회 호환
+
+- `/api/symbols/symbols`, `/api/financials/financials/{symbol}`의 중복된 경로 구성도 그대로 유지한다.
+- 심볼 미등록은 원본 서비스가 None을 반환하고 라우터가 성공 응답으로 감싸므로 HTTP 200·data=null을 유지한다.
+- 입력 검증 HTTP 422와 detail 배열은 유지하되, JVM 검증 메시지와 Pydantic 오류 code의 세부 문구 차이는 존재한다.
+- DB 오류의 내부 SQL·연결 정보는 공개하지 않는다. 원본의 예외 문자열 반환과 달리 일반 메시지를 사용한다. 기존 스키마의 country NULL은 DB 선언대로 응답할 수 있고, 원본 SymbolResponse의 중복 country 선언은 별도 호환 한계다.
