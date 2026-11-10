@@ -79,6 +79,7 @@ class OperationsStateTest {
         val measurements = RuntimeMeasurements()
         val memory = measurements.memory()
         assertNull(memory["rss_mb"])
+        assertNull(memory["percent"])
         assertTrue((memory["jvm_used_mb"] as Double) > 0)
         assertNull(measurements.objects()["total_objects"])
         val report = measurements.optimize(false)

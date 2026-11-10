@@ -25,7 +25,8 @@ class RuntimeMeasurements {
         return mapOf(
             "rss_mb" to null,
             "vms_mb" to null,
-            "percent" to
+            "percent" to null,
+            "system_memory_percent" to
                 if (total != null &&
                     total > 0 &&
                     free != null
@@ -46,7 +47,7 @@ class RuntimeMeasurements {
         val disk = File("/")
         return mapOf(
             "cpu_percent" to os?.cpuLoad?.takeIf { it >= 0 }?.times(100),
-            "memory_percent" to memory()["percent"],
+            "memory_percent" to memory()["system_memory_percent"],
             "disk_percent" to if (disk.totalSpace > 0) (disk.totalSpace - disk.usableSpace) * 100.0 / disk.totalSpace else null,
         )
     }

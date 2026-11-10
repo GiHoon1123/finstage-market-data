@@ -130,7 +130,8 @@ class MemoryHistory(
         records.add(
             mapOf(
                 "timestamp" to RuntimeMeasurements.epoch(),
-                "memory_usage_mb" to system["jvm_used_mb"],
+                "memory_usage_mb" to null,
+                "jvm_used_mb" to system["jvm_used_mb"],
                 "memory_percent" to system["percent"],
                 "cache_hit_rate" to cache["average_hit_rate"],
                 "total_cached_items" to cache["total_cached_items"],
@@ -188,7 +189,7 @@ class MemoryHistory(
                 } else {
                     "decreasing"
                 },
-            "memory_change_percent" to memory,
+            "memory_change_percent" to null,
             "cache_trend" to
                 if (cache >
                     0
@@ -249,7 +250,8 @@ class MemoryController(
             "cache_cleanup" to mapOf("expired_items_removed" to cleanup.values.sum(), "details" to cleanup),
             "final_state" to
                 mapOf(
-                    "memory_usage_mb" to mem["jvm_used_mb"],
+                    "memory_usage_mb" to null,
+                    "jvm_used_mb" to mem["jvm_used_mb"],
                     "memory_percent" to mem["percent"],
                     "cache_hit_rate" to cache["average_hit_rate"],
                 ),
@@ -308,7 +310,18 @@ class MemoryController(
     ): Map<String, Any?> {
         val records = history.history(hours)
 
-        fun average(key: String) = records.mapNotNull { (it[key] as? Number)?.toDouble() }.let { if (it.isEmpty()) 0.0 else it.average() }
+        fun average(key: String): Double? =
+            records.mapNotNull { (it[key] as? Number)?.toDouble() }.let {
+                if (it.isEmpty()) {
+                    if (records.isEmpty()) {
+                        0.0
+                    } else {
+                        null
+                    }
+                } else {
+                    it.average()
+                }
+            }
         return mapOf(
             "timestamp" to RuntimeMeasurements.now(),
             "period_hours" to hours,
