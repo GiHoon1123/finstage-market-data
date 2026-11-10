@@ -33,3 +33,7 @@ MySQL 테이블과 컬럼은 원본 SQLAlchemy 선언을 기준으로 유지한�
 원본 순수 TechnicalIndicatorService 클래스를 AST로 추출해 데코레이터만 제거하고 pandas 2.2.3·NumPy 2.2.5에서 실행했다. 상승·혼합·고정·짧은 데이터 4종 전체 시계열을 Kotlin과 비교한다. SMA warmup, 일반 EMA adjust=False, MACD adjust=True, 표본 표준편차 ddof=1, RSI 초기 delta=0을 유지한다. 캐시 데코레이터의 내부 객체 식별자 기반 동작은 계산 함수에 복제하지 않는다.
 
 NaN/Infinity는 순수 계산에서는 IEEE 값으로 유지한다. HTTP JSON에는 null로 내보낸다. 원본 FastAPI가 비유한 숫자를 직렬화하다 실패할 수 있는 구간과 명시적으로 다른 동작이며 허위 숫자를 만들지 않는다.
+
+## 시세 HTTP 어댑터
+
+원본 AsyncPriceService와 같은 Yahoo chart 경로·query·OHLCV 배열을 사용한다. connect 10초·요청 30초 제한, 외부 실패 시 null, 배치별 부분 실패를 유지한다. Kotlin 코루틴 IO dispatcher와 Semaphore로 동시 조회를 제한한다. 테스트는 로컬 HttpServer 응답으로 실행하며 실제 Yahoo 연결은 검증 결과에 포함하지 않는다. batch_size가 0 이하이면 실행 불능을 피하려고 HTTP 422로 거절한다.
