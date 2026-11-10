@@ -4,7 +4,7 @@ import json
 from datetime import datetime, date, timedelta
 from pathlib import Path
 
-source = Path('../Finstage-Market-Data/app/technical_analysis/service/daily_comprehensive_report_service.py')
+source = Path('../finstage-market-data-fastapi/app/technical_analysis/service/daily_comprehensive_report_service.py')
 tree = ast.parse(source.read_text())
 original = next(node for node in tree.body if isinstance(node, ast.ClassDef))
 selected = ['_get_backtesting_analysis', '_get_pattern_analysis', '_get_investment_insights', '_generate_report_message', '_generate_investment_insights', '_format_telegram_message', '_translate_pattern_name']

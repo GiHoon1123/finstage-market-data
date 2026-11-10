@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler
-source = Path(__file__).resolve().parents[3] / 'Finstage-Market-Data/app/ml_prediction/ml/data/feature_engineer.py'
+source = Path(__file__).resolve().parents[3] / 'finstage-market-data-fastapi/app/ml_prediction/ml/data/feature_engineer.py'
 tree = ast.parse(source.read_text())
 original = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'FeatureEngineer')
 selected = {'_prepare_features', '_add_price_features', '_add_volume_features', '_add_technical_features', '_add_time_features', '_add_lag_features', '_add_rolling_features', '_add_sentiment_features', '_calculate_rsi', '_handle_missing_values', '_create_sequences_and_targets'}
