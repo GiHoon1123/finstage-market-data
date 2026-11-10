@@ -42,7 +42,7 @@ class MarketController(
                     "interval" to interval,
                     "data_points" to history.data_points,
                     "history" to history,
-                    "timestamp" to LocalDateTime.now().toString(),
+                    "timestamp" to LocalDateTime.now().pythonIso(),
                 ),
         )
     }
@@ -69,7 +69,7 @@ class MarketController(
                     "total_symbols" to symbols.size,
                     "successful_count" to successful,
                     "results" to results,
-                    "timestamp" to LocalDateTime.now().toString(),
+                    "timestamp" to LocalDateTime.now().pythonIso(),
                 ),
         )
     }
@@ -122,7 +122,7 @@ class MarketController(
             "symbol" to symbol,
             "period" to period,
             "data_points" to candles.size,
-            "last_updated" to LocalDateTime.now().toString(),
+            "last_updated" to LocalDateTime.now().pythonIso(),
             "indicators" to output,
         )
     }

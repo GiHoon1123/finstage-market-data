@@ -79,13 +79,13 @@ class SignalRepository(
             "symbol" to rs.getString("symbol"),
             "signal_type" to rs.getString("signal_type"),
             "timeframe" to rs.getString("timeframe"),
-            "triggered_at" to rs.getTimestamp("triggered_at")?.toLocalDateTime()?.toString(),
+            "triggered_at" to rs.getTimestamp("triggered_at")?.toLocalDateTime()?.pythonIso(),
             "current_price" to rs.getBigDecimal("current_price")?.toDouble()?.takeIf { it != 0.0 },
             "indicator_value" to rs.getBigDecimal("indicator_value")?.toDouble()?.takeIf { it != 0.0 },
             "signal_strength" to rs.getBigDecimal("signal_strength")?.toDouble()?.takeIf { it != 0.0 },
             "volume" to rs.getObject("volume"),
             "market_condition" to rs.getString("market_condition"),
             "alert_sent" to rs.getObject("alert_sent")?.let { rs.getBoolean("alert_sent") },
-            "created_at" to rs.getTimestamp("created_at")?.toLocalDateTime()?.toString(),
+            "created_at" to rs.getTimestamp("created_at")?.toLocalDateTime()?.pythonIso(),
         )
 }

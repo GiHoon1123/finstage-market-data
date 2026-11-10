@@ -53,7 +53,7 @@ class CompanyRepository(
                 metadata.getColumnLabel(index) to
                     when (value) {
                         is Date -> value.toLocalDate().toString()
-                        is Timestamp -> value.toLocalDateTime().toString()
+                        is Timestamp -> value.toLocalDateTime().pythonIso()
                         else -> value
                     }
             }
