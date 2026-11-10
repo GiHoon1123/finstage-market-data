@@ -95,3 +95,11 @@ REST CORS 설정을 이전했다. security.cors-origins로 쉼표 구분 origin�
 가격의 입력 경계는 구분한다. AsyncPriceService 경로는 Yahoo meta.regularMarketPrice를, 동기 YahooPriceClient 경로는 최근 1분 quote.close의 마지막 유효 값과 30초 캐시를 사용한다. 결과 추적과 동기 스케줄러도 후자의 값으로 계산한다. 두 값이 다른 로컬 응답을 주어 혼용을 회귀 검증했다. 원시 데이터 1행은 수익률 계산에 부족해도 data_available=true로 집계하며, 분석 성공 개수와 별도로 센다.
 
 동기 Yahoo 조회는 HTTP 429에만 최대 3회 재시도하고, 비동기 시세 경로는 기존처럼 즉시 부분 실패로 처리한다. 재시도 지연은 원본의 무작위 2~5초 대신 기본 3초(`market.yahoo-retry-delay-ms`)이며 로컬 검증에서는 0으로 설정했다.
+
+## JVM ML 학습·추론
+
+Keras의 LSTM gate·dropout·BatchNorm·공통 Dense·7/14/30일 head를 DJL 0.36.0/PyTorch 2.7.1 CPU의 실제 역전파로 이전했다. 공식 지원 버전/CPU 패키지는 https://djl.ai/engines/pytorch/pytorch-engine/ 와 Maven Central 아티팩트로 확인했다. macOS ARM과 Linux x86 CPU에서 빌드되는 classifier를 지정하며 다른 플랫폼은 별도 확인 대상이다.
+
+원본 pandas 특성 시계열·scaler와 합성 Keras 출력 대조, 실제 학습 loss/gradient·dropout·validation 조기종료, 모델 저장/복원·checksum 거절·5개 HTTP 경로·MySQL 저장을 검증했다. volume은 가격이 없는 날짜를 calendar join으로 추가해 float64로 승격되는 경우에만 float32로 바꾸고, 날짜가 완전한 int64 원본은 큰 거래량 정밀도를 유지한다. 서비스의 validation 분할을 callback에도 전달한다.
+
+기존 .keras/.pkl은 서비스가 직접 실행하지 않는다. 학습 당시 feature 순서가 있는 소유 파일을 명시적으로 JSON artifact로 변환할 수 있으며 절차·실제 검증·원본 차이는 tools/ml/README.md에 기록했다. 모든 기존 모델의 자동 호환이나 TensorFlow와 bit 단위로 같은 학습 결과를 주장하지 않는다. confidence는 원본과 같은 반복 추론 변동성 지표이며 보정된 성공 확률이 아니다. 원본의 전체 sequence scaler fit 후 분할에 따른 데이터 누수 한계도 기록했다.
