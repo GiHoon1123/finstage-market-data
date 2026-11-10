@@ -18,6 +18,7 @@
 - MySQL 8.0: 원본 19개 테이블·271개 컬럼 생성/순서 확인. API/JDBC·분석·운영·복구·ML·뉴스·스케줄러·리포트를 새 컨테이너에서 별도 실행했다. CI matrix도 같은 스크립트로 검증한다.
 - 원본 pandas 지표 4개 전체 시계열, ML 특성/scaler·새 Keras 출력, VADER 119문장, 보고서/insight 3개 시나리오를 대조했다.
 - 실제 로컬 WebSocket 연결·구독·방송·heartbeat, 로컬 HTTP/RSS 외부 경계·중복·실패 조건을 검증했다.
+- 실제 bootJar·격리 MySQL·HTTP·native JVM 학습/추론·3개 예측 저장을 확인하고 테스트 서버/모델/DB를 정리했다.
 - CI 통과 후 모듈 PR을 순서대로 main에 병합한다. 개별 PR의 GitHub Actions가 실제 실행 근거다.
 
 ## 구분한 한계

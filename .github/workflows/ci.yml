@@ -17,6 +17,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Lint and test
         run: ./gradlew build
+      - name: Verify packaged service and native model runtime
+        run: python3 scripts/packaged-smoke.py
 
   mysql:
     runs-on: ubuntu-latest

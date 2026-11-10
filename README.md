@@ -33,9 +33,12 @@ Telegram은 `communications.telegram.enabled=true`와 `communications.telegram.b
 ```bash
 ./gradlew build
 python3 tools/verify_mysql_schema.py
+python3 scripts/packaged-smoke.py
 ```
 
 `build`는 lint·단위/HTTP·원본 수치 fixture·실제 WebSocket·전체 경로 대조를 실행한다. 기본 실행에서 MySQL 전용 8개 테스트는 환경 변수가 필요해 건너뛰며, CI의 격리 MySQL matrix에서 실제 실행한다.
+
+`packaged-smoke.py`는 새 MySQL에 원본 DDL과 합성 가격을 준비하고 bootJar를 실제 실행한다. HTTP 조회·native JVM 학습/예측·3개 예측 저장을 확인한 뒤 서버·DB·임시 모델을 정리한다. 운영 외부 시세·알림을 호출하지 않는다.
 
 Docker가 있는 환경에서 `scripts/test-mysql.sh`, `test-analysis-mysql.sh`, `test-operations-mysql.sh`, `test-recovery-mysql.sh`, `test-ml-mysql.sh`, `test-communications-mysql.sh`, `test-scheduler-mysql.sh`, `test-reporting-mysql.sh`를 각각 실행할 수 있다. 모든 스크립트는 새 DB 컨테이너와 테스트 자격증명을 사용하고 종료 시 정리한다.
 
