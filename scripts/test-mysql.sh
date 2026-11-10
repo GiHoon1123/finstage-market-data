@@ -17,4 +17,4 @@ if [ "$ready" -ne 1 ]; then echo 'MySQL did not become ready' >&2; exit 1; fi
 port="$(docker port "$container" 3306/tcp | awk -F: '{print $NF}')"
 MIGRATION_TEST_DATABASE_URL="jdbc:mysql://127.0.0.1:${port}/finstage_migration_test?allowPublicKeyRetrieval=true&useSSL=false" \
 MIGRATION_TEST_DATABASE_USER=root MIGRATION_TEST_DATABASE_PASSWORD=migration-test-only \
-  ./gradlew --no-daemon --max-workers=2 test --tests '*CompanyIntegrationTest' --rerun-tasks
+  ./gradlew --no-daemon --max-workers=2 test --tests '*CompanyIntegrationTest' --tests '*SignalIntegrationTest' --rerun-tasks
