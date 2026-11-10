@@ -57,3 +57,9 @@ NaN/Infinity는 순수 계산에서는 IEEE 값으로 유지한다. HTTP JSON에
 원본은 재시도 시 새 ID와 초기 카운터로 다시 제출해 재시도 한도가 지켜지지 않을 수 있고, 취소 중 동일 lock 재획득 문제도 있다. 대상은 ID를 유지하고 재시도 횟수를 제한하며 취소를 잠금 중첩 없이 수행한다. 실패한 작업의 상태 조회를 원본 router가 404로 바꾸던 오류도 실제 failed 상태 조회로 수정한다. 테스트로 우선순위/FIFO·재시도 상한·시간 제한 후 후속 실행·예약 취소·정지/재시작을 확인한다.
 
 원본 background_tasks의 5개 예제 함수는 실제 시세/메시지/DB 정리가 아니라 난수와 지연을 사용하는 시연 코드다. 대상도 시연 함수로 구분하며 외부 메시지나 데이터 삭제를 수행하지 않는다. JVM 난수는 Python의 프로세스별 hash/NumPy 난수열과 같지 않다. pandas 객체 메모리 추정치는 JVM과 대응하지 않아 memory_usage_mb=null로 표시한다. 실제 일일 종합 리포트와 이 예제 작업의 generate_report는 다른 기능이다.
+
+## 패턴·결과 추적·성과 분석
+
+패턴/advanced/outcomes/signals 성과 경로 24개를 이전했다. 원본 AdvancedPatternService는 같은 이름의 temporal similarity 메서드가 뒤에서 재정의되어 datetime 비교 경로가 실패한다. 대상은 datetime 근접도와 pattern duration 유사도를 별도 타입의 함수로 나누고 두 정상 패턴 비교를 회귀 검증한다. duration>=1h를 성공으로 세는 원본 고급 분석의 특이한 기준은 그대로 유지한다.
+
+수익이 있지만 손실이 없는 profit_factor 등 비유한 값은 내부 계산에서 유지하고 HTTP 응답에서 null로 정규화해 유효한 JSON으로 전달한다. 일부 DB 집계는 조회 후 JVM에서 계산하므로 큰 데이터셋에서는 원본과 메모리 사용량이 다르다. 테스트용 추적 API가 기존 결과를 교체하는 원본 부작용은 유지한다. H2와 격리 MySQL 8.0에서 추적 멱등성·수익률 갱신·패턴 외래키/DECIMAL 및 실제 HTTP 직렬화를 검증한다.

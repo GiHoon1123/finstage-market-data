@@ -10,7 +10,7 @@ docker run --detach --name "$container" --publish 127.0.0.1::3306 \
   --env MYSQL_DATABASE=finstage_migration_test mysql:8.0 >/dev/null
 ready=0
 for attempt in $(seq 1 90); do
-  if docker exec "$container" mysqladmin ping -uroot -pmigration-test-only --silent >/dev/null 2>&1; then ready=1; break; fi
+  if docker exec "$container" mysql --protocol=TCP -h127.0.0.1 -uroot -pmigration-test-only finstage_migration_test -Nse 'SELECT 1' >/dev/null 2>&1; then ready=1; break; fi
   sleep 1
 done
 if [ "$ready" -ne 1 ]; then echo 'MySQL did not become ready' >&2; exit 1; fi
