@@ -49,3 +49,11 @@ NaN/Infinity는 순수 계산에서는 IEEE 값으로 유지한다. HTTP JSON에
 ## 스키마 재현 검증
 
 원본의 Column·UniqueConstraint·Index·ForeignKey 선언만 AST로 추출해 SQLAlchemy 2.0.40의 MySQL DDL compiler로 생성했다. 앱 import·환경변수·운영 DB 연결은 하지 않았다. 동결한 SQL은 새 테스트 DB용이며 앱 시작 때 기존 DB에 실행하지 않는다. 격리 MySQL 8.0에서 19개 테이블·271개 컬럼의 생성과 이름·순서를 원본 inventory와 대조했다. `tools/verify_mysql_schema.py`는 Python 표준 라이브러리·Docker만으로 이 검증을 재현한다.
+
+## 인프로세스 작업 큐
+
+원본의 우선순위 큐·4개 worker·작업 조회·지수 지연 재시도·시간 제한·시작/정지와 편의 API 15개를 코루틴으로 이전한다. 분산 큐나 영속 큐가 아니므로 프로세스가 종료되면 작업 상태는 사라진다. 예약된 재시도는 같은 프로세스에서 정지/재시작할 때 유지한다.
+
+원본은 재시도 시 새 ID와 초기 카운터로 다시 제출해 재시도 한도가 지켜지지 않을 수 있고, 취소 중 동일 lock 재획득 문제도 있다. 대상은 ID를 유지하고 재시도 횟수를 제한하며 취소를 잠금 중첩 없이 수행한다. 실패한 작업의 상태 조회를 원본 router가 404로 바꾸던 오류도 실제 failed 상태 조회로 수정한다. 테스트로 우선순위/FIFO·재시도 상한·시간 제한 후 후속 실행·예약 취소·정지/재시작을 확인한다.
+
+원본 background_tasks의 5개 예제 함수는 실제 시세/메시지/DB 정리가 아니라 난수와 지연을 사용하는 시연 코드다. 대상도 시연 함수로 구분하며 외부 메시지나 데이터 삭제를 수행하지 않는다. JVM 난수는 Python의 프로세스별 hash/NumPy 난수열과 같지 않다. pandas 객체 메모리 추정치는 JVM과 대응하지 않아 memory_usage_mb=null로 표시한다. 실제 일일 종합 리포트와 이 예제 작업의 generate_report는 다른 기능이다.
