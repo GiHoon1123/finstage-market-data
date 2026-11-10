@@ -111,3 +111,11 @@ Yahoo/Investing RSS와 원문 SHA256 중복 검사·첫 기사 처리·300초 �
 금융 단어를 추가한 VADER 3.3.2 규칙·사전은 MIT 라이선스와 함께 Kotlin으로 이전했고 원본 서비스로 생성한 119개 문장의 수치와 대조했다. Python은 fixture 생성 도구에만 사용한다. Telegram은 communications.telegram.enabled=true와 base-url/token/chat-id가 있을 때만 발송하며 개발 검증에서는 로컬 서버만 사용한다. 성공 응답을 확인한 뒤 message_logs를 저장하고 최초 요청의 DB 초기화 누락을 수정했다. 원본 4096자 입력과 DB VARCHAR(1000) 충돌은 발송 전에 1000자 초과를 422로 거절한다.
 
 원본의 all-alerts가 없는 메서드를 호출하는 결함은 실제 알림 4개 유형으로 연결하고, ma/rsi/env-check의 DTO 불일치는 handler 응답 구조로 수정했다. 설정 존재 여부를 실제 자격증명 검증으로 표현하지 않는다. opt-in 뉴스 알림은 신규 기사를 커밋한 후 발송하며 발송 실패 때문에 기사를 롤백하거나 중복 재발송하지 않는다. 원본과 차이는 로컬 HTTP·RSS·실제 MySQL 회귀 테스트로 구분한다.
+
+## 일일 리포트와 활성 스케줄러
+
+리포트는 중복 정의 중 마지막 활성 메서드를 기준으로 이전했다. generate/preview의 잘못된 response_model은 실제 handler dict 구조를 제공하도록 수정했다. preview의 고정 백테스트·인사이트는 원본 시연값과 출처로 표시한다. overall_accuracy도 관측된 예측 성과가 아닌 원본 heuristic임을 구분한다. 원본의 기술 섹션에 없는 calculate_all_indicators 호출로 발생하는 section error, 30일 조회/최소 200일 guard, 마지막 메서드의 가격 변화 0, None 반환 notifier에 따른 telegram_sent=false는 숨기지 않는다. status의 DB connected는 session factory 생성만 의미해 database_check=session_factory_only를 추가했다. 메시지/insight 원본 fixture·로컬 RSS·실제 MySQL의 snapshot/최신 clustering run을 검증했다.
+
+main이 실제 등록하는 18개 작업을 180초 간격·첫 실행 180초로 연결했다. default scheduler.enabled=false이며 명시적으로 활성화한다. 원본의 주석 처리된 작업을 활성 작업처럼 표시하지 않는다. 10개 job worker·작업별 2개 심볼 worker와 queued/running 소유권으로 같은 JVM에서 중복 실행을 막는다. 뉴스 6개, 가격 5개, 큐 3개, direct 리포트/메모리/async 지표/ML 수집 각 1개다. 없는 TaskQueue.enqueue_task와 지표 helper는 실제 typed submit·계산 서비스로 대체했다.
+
+스냅샷은 동일(symbol,time)의 빈 close/high/low 필드를 합쳐 원본의 부분 행 경쟁을 완화했다. source TEST_THRESHOLDS=0과 최종 재정의된 빈 ML 수집 심볼 맵을 유지하고, production 임계값/수집 심볼은 설정으로 활성화한다. 가격 알림 cooldown은 기준별 3분, ATH 360분이다. 스케줄러 소유권·스냅샷 lock은 단일 JVM 범위이며 durable job이나 다중 인스턴스 leader 선출은 별도 범위다. 단위·로컬 HTTP·실제 MySQL에서 실행·실패 복구·중복 억제·저장/cooldown을 검증했다.
