@@ -95,12 +95,13 @@ class MonitoringController(
     fun live() = mapOf("status" to "alive", "timestamp" to RuntimeMeasurements.now(), "uptime_seconds" to measurements.uptime())
 
     @GetMapping("/metrics", produces = ["text/plain;version=0.0.4;charset=utf-8"])
-    fun metrics(): String = buildString {
-        appendLine("# TYPE finstage_uptime_seconds gauge")
-        appendLine("finstage_uptime_seconds ${measurements.uptime()}")
-        appendLine("# TYPE finstage_jvm_memory_used_bytes gauge")
-        appendLine("finstage_jvm_memory_used_bytes ${(measurements.memory()["jvm_used_mb"] as Double) * 1048576}")
-    }
+    fun metrics(): String =
+        buildString {
+            appendLine("# TYPE finstage_uptime_seconds gauge")
+            appendLine("finstage_uptime_seconds ${measurements.uptime()}")
+            appendLine("# TYPE finstage_jvm_memory_used_bytes gauge")
+            appendLine("finstage_jvm_memory_used_bytes ${(measurements.memory()["jvm_used_mb"] as Double) * 1048576}")
+        }
 
     @GetMapping("/status")
     fun status() =

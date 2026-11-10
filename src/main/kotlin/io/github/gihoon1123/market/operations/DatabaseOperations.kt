@@ -3,6 +3,8 @@ package io.github.gihoon1123.market.operations
 import io.github.gihoon1123.market.ApiFailure
 import io.github.gihoon1123.market.analysis.number
 import io.github.gihoon1123.market.analysis.row
+import jakarta.annotation.PostConstruct
+import jakarta.annotation.PreDestroy
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -13,15 +15,32 @@ class DatabaseOperations(
     private val jdbc: JdbcTemplate,
     private val telemetry: QueryTelemetry,
 ) {
+    private val flusher =
+        java.util.concurrent.Executors.newSingleThreadScheduledExecutor { task ->
+            Thread(task, "slow-query-flush").apply { isDaemon = true }
+        }
+
+    @PostConstruct
+    fun start() {
+        flusher.scheduleWithFixedDelay({ runCatching { flush() } }, 5, 5, java.util.concurrent.TimeUnit.SECONDS)
+    }
+
+    @PreDestroy
+    fun close() {
+        flusher.shutdownNow()
+    }
+
     fun query(
         sql: String,
         vararg args: Any?,
     ): List<Map<String, Any?>> = telemetry.suppressed { jdbc.query(sql, { rs, _ -> row(rs) }, *args) }
 
+    @Synchronized
     fun flush(): Int =
         telemetry.suppressed {
             var count = 0
-            for (sample in telemetry.takePending()) {
+            val batch = telemetry.takePending()
+            for ((index, sample) in batch.withIndex()) {
                 try {
                     jdbc
                         .update(
@@ -50,7 +69,7 @@ class DatabaseOperations(
                         )
                     count++
                 } catch (error: Exception) {
-                    telemetry.requeue(sample)
+                    batch.drop(index).forEach { telemetry.requeue(it) }
                     throw error
                 }
             }

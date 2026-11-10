@@ -4,6 +4,7 @@ import io.github.gihoon1123.market.MarketCache
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.jdbc.core.JdbcTemplate
@@ -34,6 +35,24 @@ class OperationsStateTest {
         assertEquals(2, (telemetry.summary()["summary"] as Map<*, *>)["total_queries"])
         assertEquals(1, operations.slowStats(1)["total_count"])
         assertEquals(0, operations.flush())
+    }
+
+    @Test
+    fun `failed flush retains the entire unprocessed batch for retry`() {
+        val jdbc = JdbcTemplate(DriverManagerDataSource("jdbc:h2:mem:telemetry_retry;DB_CLOSE_DELAY=-1", "sa", ""))
+        jdbc.execute("DROP ALL OBJECTS")
+        val telemetry = QueryTelemetry()
+        telemetry.record("SELECT 1", 1.1, 0)
+        telemetry.record("SELECT 2", 1.2, 0)
+        val service = DatabaseOperations(jdbc, telemetry)
+        assertThrows(Exception::class.java) { service.flush() }
+        jdbc.execute(
+            "CREATE TABLE slow_query_logs(query_hash VARCHAR(32),query_template TEXT,original_query TEXT," +
+                "duration DOUBLE,affected_rows INTEGER,table_names VARCHAR(500),operation_type VARCHAR(20)," +
+                "created_at TIMESTAMP,execution_timestamp TIMESTAMP)",
+        )
+        assertEquals(2, service.flush())
+        assertEquals(2, jdbc.queryForObject("SELECT COUNT(*) FROM slow_query_logs", Int::class.java))
     }
 
     @Test
