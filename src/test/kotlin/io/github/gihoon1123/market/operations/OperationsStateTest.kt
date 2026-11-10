@@ -1,6 +1,9 @@
 package io.github.gihoon1123.market.operations
 
 import io.github.gihoon1123.market.MarketCache
+import io.github.gihoon1123.market.MarketDataClient
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
@@ -9,9 +12,29 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DriverManagerDataSource
+import tools.jackson.databind.json.JsonMapper
 import javax.sql.DataSource
 
 class OperationsStateTest {
+    @Test
+    fun `custom symbols retain three percent alerts while configured index thresholds are disabled`() {
+        for (symbol in listOf("AAPL", "^IXIC")) {
+            val market = mockk<MarketDataClient>()
+            every { market.current(symbol) } returnsMany listOf(100.0, 104.0)
+            val stream = RealtimeWebSocket(JsonMapper.builder().build(), market)
+            try {
+                stream.start(listOf(symbol))
+                val deadline = System.nanoTime() + 2_000_000_000L
+                while (stream.history(symbol, 10).isEmpty() && System.nanoTime() < deadline) Thread.sleep(5)
+                assertEquals(1, stream.history(symbol, 10).size)
+                stream.streamCycle()
+                assertEquals(if (symbol == "AAPL") 1L else 0L, stream.streamerStats()["total_alerts_sent"])
+            } finally {
+                stream.close()
+            }
+        }
+    }
+
     @Test
     fun `JDBC observation measures actual statements and flushes pending slow samples without recursive tracking`() {
         val telemetry = QueryTelemetry()

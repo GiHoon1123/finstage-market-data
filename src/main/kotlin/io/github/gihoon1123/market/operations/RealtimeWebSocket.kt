@@ -333,6 +333,25 @@ class RealtimeWebSocket(
             while (list.size > 100) list.removeAt(0)
             broadcast(message, "price_update", "prices", symbol)
             updates.incrementAndGet()
+            if (pct != null && symbol !in setOf("^IXIC", "^GSPC") && abs(pct) >= 3.0) {
+                val rising = pct > 0
+                val formatted = "%.1f".format(java.util.Locale.ROOT, abs(pct))
+                val amount = "%.2f".format(java.util.Locale.ROOT, price)
+                val changeMessage = "$symbol $formatted% ${if (rising) "상승" else "하락"} (\$$amount)"
+                broadcast(
+                    mapOf(
+                        "symbol" to symbol,
+                        "alert_type" to if (rising) "price_rise" else "price_drop",
+                        "message" to changeMessage,
+                        "current_price" to price,
+                        "threshold_value" to 3.0,
+                        "severity" to if (rising) "info" else "warning",
+                    ),
+                    "alert",
+                    "alerts",
+                )
+                alerts.incrementAndGet()
+            }
             if (pct != null &&
                 abs(pct) >= 5
             ) {
@@ -355,7 +374,7 @@ class RealtimeWebSocket(
                 broadcast(alert, "alert", "alerts")
                 alerts.incrementAndGet()
             }
-            // Source's configured category thresholds are zero, disabling per-category alerts.
+            // The source disables category thresholds for the two monitored indexes; custom symbols use +/-3%.
         }
         lastUpdate = RuntimeMeasurements.now()
     }
