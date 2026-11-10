@@ -79,3 +79,17 @@ monitoring 6개·memory 11개·database 13개·WebSocket 7개 경로를 이전�
 원본의 일부 health는 실제 외부 연결 없이 healthy를 반환했다. 대상 DB는 SELECT 1, JVM/OS는 실제 값을 사용하고 미설정 외부 연동은 skipped/degraded로 구분한다. Python 객체/RSS와 정확한 cache byte 등 직접 대응하지 않는 값은 null이며 별도 JVM heap 필드를 제공한다. GC 호출은 회수량 보장이 아닌 요청이다.
 
 JDBC 프록시는 실제 statement 실행 시간을 관측하고 prepared SQL의 바인딩 값은 수집하지 않는다. 최근 관측·미저장 slow query는 각각 10,000개까지 보관한다. Hikari 활성/전체 연결은 실제 값을 쓰되 checkout 누적 통계는 null이다. information_schema/performance_schema 권한이 부족하면 index size/uses/score는 null로 구분한다. 원본이 존재하지 않는 컬럼에 대해 추천하는 index SQL도 검토용 문자열로만 제공하며 실행하지 않는다. 격리 MySQL에서 slow query flush·집계·31일 cleanup과 index 조회를 확인했다.
+
+## 복구·비동기 분석의 원본 결함과 경계
+
+복구는 원본의 일봉 DECIMAL 스키마·symbol/date 유니크 제약·행별 저장·부분 실패 집계·주말 제외 누락 조회·연도별 Yahoo 조회를 유지한다. force_update도 원본처럼 기존 행을 덮어쓰지 않고 재수집 후 중복으로 센다. 복구용 신호 생성은 일반 실시간 신호와 다른 기존 MA20/200 상향·RSI·Bollinger 규칙 및 1day timeframe을 유지한다. test_outcomes cleanup은 원본 handler에서 허용하지만 service가 처리하지 않아 대상에서도 삭제하지 않는다.
+
+원본 recovery response_model은 handler의 실제 필드와 달라 직렬화에 실패한다. 대상은 handler의 실행 결과 구조를 응답한다. 유효하지 않은 지원 심볼/cleanup 확인 누락은 기존 HTTP 500을 유지하고, query 범위 검증은 422다. 배경 실행은 인프로세스이며 재시작 시 작업/조회 상태가 사라진다.
+
+비동기 기술 분석의 SMA/EMA는 개별 지표 endpoint의 마지막 값과 달리 원본처럼 전체 index→값 시계열을 반환한다. 전체 분석의 save_results hook은 원본에도 DB 쓰기가 없어 로그만 남긴다. 원본 배경 분석이 요청에 없던 우선 심볼 3개를 추가하는 순서도 유지한다. 존재하지 않는 enqueue_task 호출과 잘못된 상태 조회 메서드는 실행 가능한 JVM 배경 작업/상태 저장으로 대체했다. 기술 스트리밍의 원본에 없는 broadcast 메서드는 실제 WebSocket 구독 채널과 연결했다.
+
+현재 지표 상태 경로는 원본에 호출 대상 get_current_technical_status 메서드가 없었다. 대상은 기존 timeframe 검증을 유지하고 1min/15min/1day에 맞는 실제 시세·지표 계산 결과를 제공한다. 비유한 지표는 다른 JSON 경로처럼 null이다.
+
+REST CORS 설정을 이전했다. security.cors-origins로 쉼표 구분 origin을 지정할 수 있다. 기본 wildcard+credentials에서는 Spring의 origin pattern으로 실제 origin을 반사해 브라우저의 credentials 규칙에 맞춘다. 원본의 무자격 wildcard 응답과 이 세부 동작은 다르다.
+
+가격의 입력 경계는 구분한다. AsyncPriceService 경로는 Yahoo meta.regularMarketPrice를, 동기 YahooPriceClient 경로는 최근 1분 quote.close의 마지막 유효 값과 30초 캐시를 사용한다. 결과 추적과 동기 스케줄러도 후자의 값으로 계산한다. 두 값이 다른 로컬 응답을 주어 혼용을 회귀 검증했다. 원시 데이터 1행은 수익률 계산에 부족해도 data_available=true로 집계하며, 분석 성공 개수와 별도로 센다.

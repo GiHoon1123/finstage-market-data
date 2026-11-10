@@ -12,6 +12,7 @@ import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
 
 data class PriceHistory(
     val symbol: String,
@@ -43,6 +44,27 @@ class MarketDataClient(
     @Value("\${market.yahoo-base-url:https://query1.finance.yahoo.com}") private val baseUrl: String,
 ) {
     private val http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build()
+    private val minuteCache = ConcurrentHashMap<String, Pair<Long, Double>>()
+
+    fun latestMinutePrice(
+        symbol: String,
+        ignoreCache: Boolean = false,
+    ): Double? {
+        val now = System.currentTimeMillis()
+        if (!ignoreCache) minuteCache[symbol]?.takeIf { now - it.first < 30000 }?.let { return it.second }
+        val chart = chart(symbol, mapOf("range" to "1d", "interval" to "1m")) ?: return null
+        val price =
+            chart
+                .path("indicators")
+                .path("quote")
+                .path(0)
+                .path("close")
+                .toList()
+                .lastOrNull { it.isNumber && it.asDouble().isFinite() }
+                ?.asDouble() ?: return null
+        minuteCache[symbol] = now to price
+        return price
+    }
 
     fun history(
         symbol: String,

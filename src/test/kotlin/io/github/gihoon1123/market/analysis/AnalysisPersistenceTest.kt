@@ -45,7 +45,7 @@ class AnalysisPersistenceTest {
         }
         repository = OutcomeRepository(jdbc)
         tracking = OutcomeTrackingService(repository, market, TransactionTemplate(DataSourceTransactionManager(source)))
-        every { market.current(any()) } returns 110.0
+        every { market.latestMinutePrice(any()) } returns 110.0
     }
 
     @Test

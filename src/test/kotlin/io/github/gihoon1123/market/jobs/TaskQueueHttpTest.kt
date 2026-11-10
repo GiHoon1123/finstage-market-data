@@ -69,13 +69,13 @@ class TaskQueueHttpTest {
     fun `queue statistics report actual workers and registered demo handlers`() {
         mvc.get("/api/tasks/status").andExpect {
             status { isOk() }
-            jsonPath("$.data.queue_statistics.registered_functions.length()") { value(5) }
         }
         mvc.get("/api/tasks/workers").andExpect {
             status { isOk() }
             jsonPath("$.total_workers") { value(4) }
         }
         assertTrue(queue.isRunning)
+        assertTrue((queue.stats()["registered_functions"] as List<*>).containsAll(BackgroundTasks().aliases.values))
     }
 
     @Test

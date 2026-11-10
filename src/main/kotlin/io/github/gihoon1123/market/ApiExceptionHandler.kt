@@ -2,6 +2,7 @@ package io.github.gihoon1123.market
 
 import org.springframework.dao.DataAccessException
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -11,6 +12,17 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @RestControllerAdvice
 class ApiExceptionHandler {
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun invalidJson(): ResponseEntity<Any> =
+        ResponseEntity.unprocessableContent().body(
+            mapOf(
+                "detail" to
+                    listOf(
+                        mapOf("loc" to listOf("body"), "msg" to "Invalid JSON request body", "type" to "json_invalid"),
+                    ),
+            ),
+        )
+
     @ExceptionHandler(MissingServletRequestParameterException::class)
     fun missingParameter(error: MissingServletRequestParameterException): ResponseEntity<Any> =
         ResponseEntity.unprocessableContent().body(

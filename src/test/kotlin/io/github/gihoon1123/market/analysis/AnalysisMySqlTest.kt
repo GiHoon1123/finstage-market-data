@@ -49,7 +49,7 @@ class AnalysisMySqlTest {
         patterns = PatternRepository(jdbc)
         outcomes = OutcomeRepository(jdbc)
         tracking = OutcomeTrackingService(outcomes, market, TransactionTemplate(DataSourceTransactionManager(source)))
-        every { market.current(any()) } returns 110.0
+        every { market.latestMinutePrice(any()) } returns 110.0
     }
 
     @Test
