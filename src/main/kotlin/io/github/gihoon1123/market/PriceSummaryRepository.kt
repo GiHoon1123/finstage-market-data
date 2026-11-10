@@ -60,7 +60,7 @@ class PriceSummaryRepository(
         return mapOf(
             "symbol" to symbol,
             "latest_close" to latest?.close,
-            "latest_snapshot_date" to latest?.at?.toString(),
+            "latest_snapshot_date" to latest?.at?.pythonIso(),
             "previous_high" to high,
             "previous_low" to low,
             "has_complete_data" to (latest?.close.nonzero() && high.nonzero() && low.nonzero()),
@@ -74,7 +74,7 @@ class PriceSummaryRepository(
             "symbol" to symbol,
             "has_record" to true,
             "price" to record.price,
-            "recorded_at" to record.at.toString(),
+            "recorded_at" to record.at.pythonIso(),
             "source" to record.source,
             "days_since_high" to days,
         )
@@ -95,7 +95,7 @@ class PriceSummaryRepository(
             "prev_low" to previousValue(symbol, snapshot, "low"),
             "change_from_close" to change(current, snapshot?.close),
             "change_from_high" to change(current, high?.price),
-            "timestamp" to LocalDateTime.now(ZoneOffset.UTC).toString(),
+            "timestamp" to LocalDateTime.now(ZoneOffset.UTC).pythonIso(),
         )
     }
 

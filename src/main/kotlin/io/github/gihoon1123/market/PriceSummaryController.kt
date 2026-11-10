@@ -31,7 +31,13 @@ class PriceSummaryController(
             }
         return ApiResponse(
             message = "$symbol 현재 가격 조회가 완료되었습니다",
-            data = mapOf("symbol" to symbol, "current_price" to price, "timestamp" to LocalDateTime.now().toString(), "details" to details),
+            data =
+                mapOf(
+                    "symbol" to symbol,
+                    "current_price" to price,
+                    "timestamp" to LocalDateTime.now().pythonIso(),
+                    "details" to details,
+                ),
         )
     }
 
@@ -70,7 +76,7 @@ class PriceSummaryController(
             "total_symbols" to actual.size,
             "batch_size" to batchSize,
             "results" to results,
-            "timestamp" to LocalDateTime.now().toString(),
+            "timestamp" to LocalDateTime.now().pythonIso(),
         )
     }
 }

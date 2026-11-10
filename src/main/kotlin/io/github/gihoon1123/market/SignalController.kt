@@ -43,7 +43,7 @@ class SignalController(
                                     "hours" to hours,
                                     "limit" to limit,
                                 ),
-                            "time_range" to mapOf("start" to start.toString(), "end" to end.toString()),
+                            "time_range" to mapOf("start" to start.pythonIso(), "end" to end.pythonIso()),
                         ),
                 ),
         )
@@ -106,7 +106,7 @@ class SignalController(
                     "statistics" to stats,
                     "metadata" to
                         mapOf(
-                            "period" to mapOf("days" to days, "start_date" to start.toString(), "end_date" to end.toString()),
+                            "period" to mapOf("days" to days, "start_date" to start.pythonIso(), "end_date" to end.pythonIso()),
                             "filters" to mapOf("symbol" to symbol),
                             "total_signals" to signals.size,
                         ),
