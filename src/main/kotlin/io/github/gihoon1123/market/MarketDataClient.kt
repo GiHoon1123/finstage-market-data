@@ -86,7 +86,7 @@ class MarketDataClient(
             ?.takeIf { it != 0.0 }
     }
 
-    private fun chart(
+    internal fun chart(
         symbol: String,
         parameters: Map<String, String>,
     ): JsonNode? =

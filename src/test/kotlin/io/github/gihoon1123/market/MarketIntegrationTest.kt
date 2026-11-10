@@ -2,6 +2,7 @@ package io.github.gihoon1123.market
 
 import com.sun.net.httpserver.HttpServer
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -84,6 +85,47 @@ class MarketIntegrationTest {
     }
 
     @Autowired lateinit var mvc: MockMvc
+
+    @Test
+    fun `legacy async price retains response model projection and caches source request`() {
+        repeat(2) {
+            mvc.get("/api/v2/async/symbols/CACHE/price").andExpect {
+                status { isOk() }
+                jsonPath("$.symbol") { value("CACHE") }
+                jsonPath("$.current_price") { doesNotExist() }
+                jsonPath("$.price") { doesNotExist() }
+            }
+        }
+        assertEquals(1, requests.count { "/CACHE?" in it })
+    }
+
+    @Test
+    fun `legacy async analysis caches calculated means and batch retains partial failure`() {
+        mvc.get("/api/v2/async/technical/analysis/TECH").andExpect {
+            status { isOk() }
+            jsonPath("$.ma_20") { value(129.5) }
+            jsonPath("$.ma_50") { value(119.5) }
+            jsonPath("$.trend") { value("bullish") }
+            jsonPath("$.source") { value("api") }
+        }
+        mvc.get("/api/v2/async/technical/analysis/TECH").andExpect {
+            jsonPath("$.source") { value("cache") }
+        }
+        mvc.get("/api/v2/async/symbols/batch?symbols=AAPL,MISSING").andExpect {
+            status { isOk() }
+            jsonPath("$.prices.AAPL") { value(200.5) }
+            jsonPath("$.prices.MISSING") { doesNotExist() }
+        }
+    }
+
+    @Test
+    fun `missing query produces FastAPI style required field error`() {
+        mvc.get("/api/v2/async/symbols/batch").andExpect {
+            status { isUnprocessableContent() }
+            jsonPath("$.detail[0].loc[0]") { value("query") }
+            jsonPath("$.detail[0].type") { value("missing") }
+        }
+    }
 
     @Test
     fun `history preserves OHLCV arrays and original range query`() {

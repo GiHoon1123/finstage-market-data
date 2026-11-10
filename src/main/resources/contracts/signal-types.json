@@ -1,0 +1,26 @@
+{
+  "moving_average": {
+    "MA20_breakout_up": "20일선 상향 돌파",
+    "MA20_breakout_down": "20일선 하향 이탈",
+    "MA50_breakout_up": "50일선 상향 돌파",
+    "MA50_breakout_down": "50일선 하향 이탈",
+    "MA200_breakout_up": "200일선 상향 돌파",
+    "MA200_breakout_down": "200일선 하향 이탈"
+  },
+  "rsi": {
+    "RSI_overbought": "RSI 과매수 (70 이상)",
+    "RSI_oversold": "RSI 과매도 (30 이하)",
+    "RSI_bullish": "RSI 상승 모멘텀 (50 돌파)",
+    "RSI_bearish": "RSI 하락 모멘텀 (50 이탈)"
+  },
+  "bollinger_bands": {
+    "BB_touch_upper": "볼린저 밴드 상단 터치",
+    "BB_touch_lower": "볼린저 밴드 하단 터치",
+    "BB_break_upper": "볼린저 밴드 상단 돌파",
+    "BB_break_lower": "볼린저 밴드 하단 이탈"
+  },
+  "cross_signals": {
+    "golden_cross": "골든크로스 (50일선이 200일선 상향돌파)",
+    "dead_cross": "데드크로스 (50일선이 200일선 하향이탈)"
+  }
+}
