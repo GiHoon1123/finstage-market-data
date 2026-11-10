@@ -93,3 +93,5 @@ JDBC 프록시는 실제 statement 실행 시간을 관측하고 prepared SQL의
 REST CORS 설정을 이전했다. security.cors-origins로 쉼표 구분 origin을 지정할 수 있다. 기본 wildcard+credentials에서는 Spring의 origin pattern으로 실제 origin을 반사해 브라우저의 credentials 규칙에 맞춘다. 원본의 무자격 wildcard 응답과 이 세부 동작은 다르다.
 
 가격의 입력 경계는 구분한다. AsyncPriceService 경로는 Yahoo meta.regularMarketPrice를, 동기 YahooPriceClient 경로는 최근 1분 quote.close의 마지막 유효 값과 30초 캐시를 사용한다. 결과 추적과 동기 스케줄러도 후자의 값으로 계산한다. 두 값이 다른 로컬 응답을 주어 혼용을 회귀 검증했다. 원시 데이터 1행은 수익률 계산에 부족해도 data_available=true로 집계하며, 분석 성공 개수와 별도로 센다.
+
+동기 Yahoo 조회는 HTTP 429에만 최대 3회 재시도하고, 비동기 시세 경로는 기존처럼 즉시 부분 실패로 처리한다. 재시도 지연은 원본의 무작위 2~5초 대신 기본 3초(`market.yahoo-retry-delay-ms`)이며 로컬 검증에서는 0으로 설정했다.

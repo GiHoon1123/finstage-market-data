@@ -95,7 +95,8 @@ class RecoveryService(
                     .atTime(23, 59, 59)
                     .atZone(zone)
                     .toEpochSecond()
-            val chart = market.chart(symbol, mapOf("period1" to "$from", "period2" to "$to", "interval" to "1d")) ?: continue
+            val chart =
+                market.chart(symbol, mapOf("period1" to "$from", "period2" to "$to", "interval" to "1d"), rateLimitRetries = 3) ?: continue
             val quote = chart.path("indicators").path("quote").path(0)
             chart.path("timestamp").toList().forEachIndexed { index, time ->
                 val values = listOf("open", "high", "low", "close", "volume").map { quote.path(it).path(index) }

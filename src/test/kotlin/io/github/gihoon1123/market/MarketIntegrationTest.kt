@@ -35,6 +35,12 @@ class MarketIntegrationTest {
             HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0).apply {
                 createContext("/v8/finance/chart/") { exchange ->
                     requests.add(exchange.requestURI.toASCIIString())
+                    val requested = exchange.requestURI.path.substringAfterLast('/')
+                    if (requested.startsWith("RATE_") && requests.count { "/$requested?" in it } <= 3) {
+                        exchange.sendResponseHeaders(429, -1)
+                        exchange.close()
+                        return@createContext
+                    }
                     val points = if (exchange.requestURI.path.endsWith("/ONE")) 1 else 40
                     val json =
                         if (exchange.requestURI.path.endsWith("/MISSING")) {
@@ -93,6 +99,15 @@ class MarketIntegrationTest {
     @Autowired lateinit var jdbc: JdbcTemplate
 
     @Autowired lateinit var market: MarketDataClient
+
+    @Test
+    fun `only synchronous Yahoo requests retry rate limits with a bounded policy`() {
+        val client = MarketDataClient(JsonMapper.builder().build(), "http://127.0.0.1:${server.address.port}", 0)
+        assertEquals(null, client.current("RATE_META"))
+        assertEquals(1, requests.count { "/RATE_META?" in it })
+        assertEquals(139.0, client.latestMinutePrice("RATE_QUOTE"))
+        assertEquals(4, requests.count { "/RATE_QUOTE?" in it })
+    }
 
     @Test
     fun `malformed JSON retains a validation response rather than Spring bad request envelope`() {

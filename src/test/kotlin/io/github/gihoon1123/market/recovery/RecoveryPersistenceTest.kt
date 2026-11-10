@@ -93,7 +93,7 @@ class RecoveryPersistenceTest {
             JsonMapper.builder().build().readTree(
                 """{"timestamp":[$time,${time + 1}],"indicators":{"quote":[{"open":[100,null],"high":[110,110],"low":[90,90],"close":[105,105],"volume":[1000,1000]}]}}""",
             )
-        every { market.chart("^IXIC", any()) } returns chart
+        every { market.chart("^IXIC", any(), 3) } returns chart
         assertEquals(1, service.download("^IXIC", 2024, 2025).size)
         assertEquals(1, service.historical(listOf("^IXIC"), 1, true)["^IXIC"]!!["saved_count"])
         assertEquals(1, service.historical(listOf("^IXIC"), 1, true)["^IXIC"]!!["duplicate_count"])
