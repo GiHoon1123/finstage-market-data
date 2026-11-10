@@ -31,3 +31,5 @@ jobs:
         run: python3 tools/verify_mysql_schema.py
       - name: Verify JDBC APIs against MySQL
         run: scripts/test-mysql.sh
+      - name: Verify analysis persistence and JSON against MySQL
+        run: scripts/test-analysis-mysql.sh
