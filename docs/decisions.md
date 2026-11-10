@@ -45,3 +45,7 @@ NaN/Infinity는 순수 계산에서는 IEEE 값으로 유지한다. HTTP JSON에
 ## 시세 요약
 
 최고가 기록은 최신 날짜가 아니라 가장 큰 price를 선택한다. previous_high/low는 함수명과 달리 최신 snapshot이 속한 당일의 값이므로 원본 조건을 유지한다. 기본 심볼은 SYMBOL_PRICE_MAP의 실제 두 지수(^IXIC, ^GSPC)다. get_current(include_details=true)의 price_summary에서는 이미 조회한 현재가를 재사용해 추가 Yahoo 호출을 줄인다.
+
+## 스키마 재현 검증
+
+원본의 Column·UniqueConstraint·Index·ForeignKey 선언만 AST로 추출해 SQLAlchemy 2.0.40의 MySQL DDL compiler로 생성했다. 앱 import·환경변수·운영 DB 연결은 하지 않았다. 동결한 SQL은 새 테스트 DB용이며 앱 시작 때 기존 DB에 실행하지 않는다. 격리 MySQL 8.0에서 19개 테이블·271개 컬럼의 생성과 이름·순서를 원본 inventory와 대조했다. `tools/verify_mysql_schema.py`는 Python 표준 라이브러리·Docker만으로 이 검증을 재현한다.

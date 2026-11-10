@@ -15,3 +15,9 @@
 - 운영 모니터링·메모리·작업 큐: 예정
 
 전체 호환 검증 전 원본/대상 저장소 이름을 바꾸지 않는다.
+
+## 스키마 검증
+
+- `python3 tools/verify_mysql_schema.py`: MySQL 8.0의 원본 19개 테이블·271개 컬럼 생성 및 이름/순서 대조 통과.
+- `scripts/test-mysql.sh`: 회사·재무 4개, 신호 4개, 시세 요약 3개 실제 MySQL 테스트 통과.
+- 동일 검증을 GitHub Actions mysql job으로 등록했다. CI의 실제 결과는 해당 PR 기록을 기준으로 한다.
