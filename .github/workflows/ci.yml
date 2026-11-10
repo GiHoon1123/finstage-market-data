@@ -33,3 +33,5 @@ jobs:
         run: scripts/test-mysql.sh
       - name: Verify analysis persistence and JSON against MySQL
         run: scripts/test-analysis-mysql.sh
+      - name: Verify query telemetry and index analysis against MySQL
+        run: scripts/test-operations-mysql.sh

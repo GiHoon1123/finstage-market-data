@@ -14,7 +14,7 @@
 - ML·학습 모델·뉴스·감정 분석: 진행 중
 - 가격 history·배치 current·기술 지표 HTTP: 구현, 로컬 가짜 Yahoo 서버와 Spring HTTP 통합 테스트 5개 통과. 현재가·snapshot/high summary: 구현, 실제 DB 테이블 기반 HTTP 테스트 3개 통과. Telegram·스케줄러·WebSocket: 예정
 - 인프로세스 작업 큐 15개 API·5개 원본 예제 작업: 구현, 우선순위/FIFO·재시도 상한·시간 제한·정지/재시작·취소 및 HTTP 테스트 8개 통과. 원본 큐 결함 수정과 시연 함수의 한계는 decisions.md 참고
-- 운영 모니터링·메모리: 진행 중
+- 운영 모니터링·메모리·DB 관측·WebSocket 37개 경로: 구현, 실제 WebSocket/H2/실측 4개 및 격리 MySQL 2개 테스트 통과. Python 전용 측정·외부 health 차이는 decisions.md 참고
 
 전체 호환 검증 전 원본/대상 저장소 이름을 바꾸지 않는다.
 

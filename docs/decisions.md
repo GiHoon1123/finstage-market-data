@@ -71,3 +71,11 @@ NaN/Infinity는 순수 계산에서는 IEEE 값으로 유지한다. HTTP JSON에
 단일 시세 경로는 원본 handler가 price/source를 반환해도 AsyncPriceResponse가 이를 버리고 current_price 등 optional 필드를 null로 출력한다. 이 기존 HTTP 계약을 보존하며 시세는 batch 또는 `/api/v2/market-price/current/{symbol}`에서 확인할 수 있다. 유틸리티 2개 경로는 반대로 required 필드가 다른 response_model 때문에 원본이 직렬화에 실패한다. 대상은 handler의 실제 signal_types/health 구조를 응답하도록 이 명백한 DTO 불일치를 수정했다. DB health는 실제 최근 1시간 신호 조회로 확인한다.
 
 필수 query/body 검증 오류는 HTTP 422 detail 배열로 통일한다. Pydantic과 JVM의 세부 오류 문구 차이는 남는다. 외부 오류에는 원본의 내부 예외 문자열 대신 일반 메시지를 사용한다.
+
+## JVM 운영 관측과 WebSocket
+
+monitoring 6개·memory 11개·database 13개·WebSocket 7개 경로를 이전했다. WebSocket은 Socket.IO가 아닌 JSON text 채널이며 실제 JDK 클라이언트로 연결·구독·방송·heartbeat·구독 해제를 검증한다. 시세 스트리밍은 시작 요청 후에만 외부 시세를 조회한다.
+
+원본의 일부 health는 실제 외부 연결 없이 healthy를 반환했다. 대상 DB는 SELECT 1, JVM/OS는 실제 값을 사용하고 미설정 외부 연동은 skipped/degraded로 구분한다. Python 객체/RSS와 정확한 cache byte 등 직접 대응하지 않는 값은 null이며 별도 JVM heap 필드를 제공한다. GC 호출은 회수량 보장이 아닌 요청이다.
+
+JDBC 프록시는 실제 statement 실행 시간을 관측하고 prepared SQL의 바인딩 값은 수집하지 않는다. 최근 관측·미저장 slow query는 각각 10,000개까지 보관한다. Hikari 활성/전체 연결은 실제 값을 쓰되 checkout 누적 통계는 null이다. information_schema/performance_schema 권한이 부족하면 index size/uses/score는 null로 구분한다. 원본이 존재하지 않는 컬럼에 대해 추천하는 index SQL도 검토용 문자열로만 제공하며 실행하지 않는다. 격리 MySQL에서 slow query flush·집계·31일 cleanup과 index 조회를 확인했다.
