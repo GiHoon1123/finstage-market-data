@@ -9,6 +9,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @RestControllerAdvice
 class ApiExceptionHandler {
+    @ExceptionHandler(ApiFailure::class)
+    fun apiFailure(error: ApiFailure): ResponseEntity<Any> = ResponseEntity.status(error.code).body(mapOf("detail" to error.detail))
+
     @ExceptionHandler(HandlerMethodValidationException::class)
     fun validation(error: HandlerMethodValidationException): ResponseEntity<Any> {
         val errors =
