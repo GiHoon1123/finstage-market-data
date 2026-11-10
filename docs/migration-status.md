@@ -11,7 +11,7 @@
 - 일봉 저장: 예정. SMA·EMA·RSI·Bollinger·MACD·stochastic·VWAP와 신호 판정: 구현, 원본 pandas 시계열 표본 대조 통과
 - 신호 조회·심볼 필터·타입별/일별/강도 통계 5개 경로: 구현, HTTP+H2 및 격리 MySQL 테스트 4개 통과. 패턴·결과 추적·보고: 예정
 - ML·학습 모델·뉴스·감정 분석: 예정
-- 가격 history·배치 current·기술 지표 HTTP: 구현, 로컬 가짜 Yahoo 서버와 Spring HTTP 통합 테스트 5개 통과. Telegram·스케줄러·WebSocket: 예정
+- 가격 history·배치 current·기술 지표 HTTP: 구현, 로컬 가짜 Yahoo 서버와 Spring HTTP 통합 테스트 5개 통과. 현재가·snapshot/high summary: 구현, 실제 DB 테이블 기반 HTTP 테스트 3개 통과. Telegram·스케줄러·WebSocket: 예정
 - 운영 모니터링·메모리·작업 큐: 예정
 
 전체 호환 검증 전 원본/대상 저장소 이름을 바꾸지 않는다.
