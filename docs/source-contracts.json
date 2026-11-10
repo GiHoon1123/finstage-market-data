@@ -1,0 +1,2639 @@
+{
+  "source_commit": "afb74022953de00a5fe74f38c6223f236c79b0f3",
+  "python_files": 199,
+  "lines": 70412,
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/api/database/query-stats",
+      "mounted": true,
+      "function": "get_query_statistics",
+      "source": "app/common/infra/database/routes.py",
+      "line": 31
+    },
+    {
+      "method": "GET",
+      "path": "/api/database/slow-queries",
+      "mounted": true,
+      "function": "get_slow_queries",
+      "source": "app/common/infra/database/routes.py",
+      "line": 57
+    },
+    {
+      "method": "GET",
+      "path": "/api/database/connection-pool",
+      "mounted": true,
+      "function": "get_connection_pool_status",
+      "source": "app/common/infra/database/routes.py",
+      "line": 101
+    },
+    {
+      "method": "POST",
+      "path": "/api/database/connection-pool/optimize",
+      "mounted": true,
+      "function": "optimize_connection_pool",
+      "source": "app/common/infra/database/routes.py",
+      "line": 125
+    },
+    {
+      "method": "GET",
+      "path": "/api/database/connection-pool/metrics",
+      "mounted": true,
+      "function": "get_connection_pool_metrics",
+      "source": "app/common/infra/database/routes.py",
+      "line": 157
+    },
+    {
+      "method": "GET",
+      "path": "/api/database/indexes/analysis",
+      "mounted": true,
+      "function": "analyze_indexes",
+      "source": "app/common/infra/database/routes.py",
+      "line": 188
+    },
+    {
+      "method": "GET",
+      "path": "/api/database/indexes/optimization-sql",
+      "mounted": true,
+      "function": "generate_optimization_sql",
+      "source": "app/common/infra/database/routes.py",
+      "line": 208
+    },
+    {
+      "method": "GET",
+      "path": "/api/database/performance-summary",
+      "mounted": true,
+      "function": "get_performance_summary",
+      "source": "app/common/infra/database/routes.py",
+      "line": 237
+    },
+    {
+      "method": "POST",
+      "path": "/api/database/maintenance/reset-metrics",
+      "mounted": true,
+      "function": "reset_metrics",
+      "source": "app/common/infra/database/routes.py",
+      "line": 308
+    },
+    {
+      "method": "GET",
+      "path": "/api/database/slow-queries/statistics",
+      "mounted": true,
+      "function": "get_slow_query_statistics",
+      "source": "app/common/infra/database/routes.py",
+      "line": 374
+    },
+    {
+      "method": "GET",
+      "path": "/api/database/slow-queries/patterns",
+      "mounted": true,
+      "function": "get_slow_query_patterns",
+      "source": "app/common/infra/database/routes.py",
+      "line": 398
+    },
+    {
+      "method": "POST",
+      "path": "/api/database/slow-queries/cleanup",
+      "mounted": true,
+      "function": "cleanup_slow_query_logs",
+      "source": "app/common/infra/database/routes.py",
+      "line": 422
+    },
+    {
+      "method": "POST",
+      "path": "/api/database/slow-queries/flush",
+      "mounted": true,
+      "function": "flush_pending_slow_queries",
+      "source": "app/common/infra/database/routes.py",
+      "line": 444
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/alerts/",
+      "mounted": false,
+      "function": "get_active_alerts",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 97
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/alerts/history",
+      "mounted": false,
+      "function": "get_alert_history",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 175
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/alerts/statistics",
+      "mounted": false,
+      "function": "get_alert_statistics",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 230
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/alerts/rules",
+      "mounted": false,
+      "function": "get_alert_rules",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 258
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/alerts/rules",
+      "mounted": false,
+      "function": "add_alert_rule",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 298
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v2/alerts/rules/{rule_id}",
+      "mounted": false,
+      "function": "remove_alert_rule",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 363
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v2/alerts/rules/{rule_id}/enable",
+      "mounted": false,
+      "function": "enable_alert_rule",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 399
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v2/alerts/rules/{rule_id}/disable",
+      "mounted": false,
+      "function": "disable_alert_rule",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 435
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v2/alerts/alerts/{alert_id}/acknowledge",
+      "mounted": false,
+      "function": "acknowledge_alert",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 471
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/alerts/monitoring/start",
+      "mounted": false,
+      "function": "start_monitoring",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 505
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/alerts/monitoring/stop",
+      "mounted": false,
+      "function": "stop_monitoring",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 534
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/alerts/config/email",
+      "mounted": false,
+      "function": "configure_email",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 557
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/alerts/config/webhook",
+      "mounted": false,
+      "function": "add_webhook_url",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 590
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v2/alerts/config/webhook",
+      "mounted": false,
+      "function": "remove_webhook_url",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 618
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/alerts/config",
+      "mounted": false,
+      "function": "get_alert_config",
+      "source": "app/common/monitoring/alert_router.py",
+      "line": 646
+    },
+    {
+      "method": "GET",
+      "path": "/monitoring/health",
+      "mounted": true,
+      "function": "health_check",
+      "source": "app/common/monitoring/routes.py",
+      "line": 33
+    },
+    {
+      "method": "GET",
+      "path": "/monitoring/health/ready",
+      "mounted": true,
+      "function": "readiness_check",
+      "source": "app/common/monitoring/routes.py",
+      "line": 68
+    },
+    {
+      "method": "GET",
+      "path": "/monitoring/health/live",
+      "mounted": true,
+      "function": "liveness_check",
+      "source": "app/common/monitoring/routes.py",
+      "line": 98
+    },
+    {
+      "method": "GET",
+      "path": "/monitoring/metrics",
+      "mounted": true,
+      "function": "get_metrics",
+      "source": "app/common/monitoring/routes.py",
+      "line": 124
+    },
+    {
+      "method": "GET",
+      "path": "/monitoring/status",
+      "mounted": true,
+      "function": "get_status",
+      "source": "app/common/monitoring/routes.py",
+      "line": 150
+    },
+    {
+      "method": "GET",
+      "path": "/monitoring/info",
+      "mounted": true,
+      "function": "get_app_info",
+      "source": "app/common/monitoring/routes.py",
+      "line": 191
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/optimization/status",
+      "mounted": false,
+      "function": "get_optimization_status",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 77
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/optimization/rules",
+      "mounted": false,
+      "function": "get_optimization_rules",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 103
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/optimization/rules/{rule_id}",
+      "mounted": false,
+      "function": "get_optimization_rule",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 132
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/optimization/rules",
+      "mounted": false,
+      "function": "add_optimization_rule",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 178
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v2/optimization/rules/{rule_id}",
+      "mounted": false,
+      "function": "remove_optimization_rule",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 252
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/optimization/enable",
+      "mounted": false,
+      "function": "enable_optimization",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 314
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/optimization/disable",
+      "mounted": false,
+      "function": "disable_optimization",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 354
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/optimization/baseline",
+      "mounted": false,
+      "function": "set_performance_baseline",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 394
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/optimization/baseline",
+      "mounted": false,
+      "function": "get_performance_baseline",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 425
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/optimization/monitoring/start",
+      "mounted": false,
+      "function": "start_monitoring",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 458
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/optimization/monitoring/stop",
+      "mounted": false,
+      "function": "stop_monitoring",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 488
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/optimization/history",
+      "mounted": false,
+      "function": "get_optimization_history",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 512
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/optimization/batch/enable",
+      "mounted": false,
+      "function": "batch_enable_optimizations",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 542
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/optimization/batch/disable",
+      "mounted": false,
+      "function": "batch_disable_optimizations",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 599
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/optimization/recommendations",
+      "mounted": false,
+      "function": "get_optimization_recommendations",
+      "source": "app/common/optimization/optimization_router.py",
+      "line": 656
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/ab-tests/",
+      "mounted": false,
+      "function": "get_ab_tests",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 104
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/ab-tests/{test_id}",
+      "mounted": false,
+      "function": "get_ab_test",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 168
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/ab-tests/",
+      "mounted": false,
+      "function": "create_ab_test",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 251
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/ab-tests/{test_id}/start",
+      "mounted": false,
+      "function": "start_ab_test",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 326
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/ab-tests/{test_id}/stop",
+      "mounted": false,
+      "function": "stop_ab_test",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 360
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/ab-tests/{test_id}/assign/{user_identifier}",
+      "mounted": false,
+      "function": "get_variant_assignment",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 398
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/ab-tests/results",
+      "mounted": false,
+      "function": "record_test_result",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 456
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/ab-tests/{test_id}/statistics",
+      "mounted": false,
+      "function": "get_test_statistics",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 497
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/ab-tests/{test_id}/analysis",
+      "mounted": false,
+      "function": "analyze_test_significance",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 549
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v2/ab-tests/{test_id}",
+      "mounted": false,
+      "function": "delete_ab_test",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 577
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/ab-tests/endpoint/{endpoint_path:path}/active",
+      "mounted": false,
+      "function": "get_active_tests_for_endpoint",
+      "source": "app/common/testing/ab_test_router.py",
+      "line": 629
+    },
+    {
+      "method": "GET",
+      "path": "/api/memory/status",
+      "mounted": true,
+      "function": "get_system_memory_status",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 25
+    },
+    {
+      "method": "GET",
+      "path": "/api/memory/health",
+      "mounted": true,
+      "function": "check_system_memory_health",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 39
+    },
+    {
+      "method": "POST",
+      "path": "/api/memory/optimize",
+      "mounted": true,
+      "function": "optimize_system_memory",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 55
+    },
+    {
+      "method": "GET",
+      "path": "/api/memory/diagnostics",
+      "mounted": true,
+      "function": "get_system_memory_diagnostics",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 74
+    },
+    {
+      "method": "GET",
+      "path": "/api/memory/cache/stats",
+      "mounted": true,
+      "function": "get_cache_statistics",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 90
+    },
+    {
+      "method": "POST",
+      "path": "/api/memory/cache/cleanup",
+      "mounted": true,
+      "function": "cleanup_expired_cache",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 104
+    },
+    {
+      "method": "POST",
+      "path": "/api/memory/cache/clear",
+      "mounted": true,
+      "function": "clear_all_cache",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 126
+    },
+    {
+      "method": "GET",
+      "path": "/api/memory/performance/history",
+      "mounted": true,
+      "function": "get_performance_history",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 168
+    },
+    {
+      "method": "GET",
+      "path": "/api/memory/optimization/history",
+      "mounted": true,
+      "function": "get_optimization_history",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 209
+    },
+    {
+      "method": "GET",
+      "path": "/api/memory/alerts",
+      "mounted": true,
+      "function": "get_memory_alerts",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 245
+    },
+    {
+      "method": "GET",
+      "path": "/api/memory/monitoring/status",
+      "mounted": true,
+      "function": "get_monitoring_status",
+      "source": "app/common/utils/memory_api_router.py",
+      "line": 278
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/status",
+      "mounted": true,
+      "function": "get_task_queue_status",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 57
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/submit",
+      "mounted": true,
+      "function": "submit_task",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 98
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/task/{task_id}",
+      "mounted": true,
+      "function": "get_task_status",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 175
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/task/{task_id}/result",
+      "mounted": true,
+      "function": "get_task_result",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 195
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/task/{task_id}/cancel",
+      "mounted": true,
+      "function": "cancel_task",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 233
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/workers",
+      "mounted": true,
+      "function": "get_worker_status",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 257
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/queue/stats",
+      "mounted": true,
+      "function": "get_queue_statistics",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 275
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/system/start",
+      "mounted": true,
+      "function": "start_task_queue_system",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 292
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/system/stop",
+      "mounted": true,
+      "function": "stop_task_queue_system",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 311
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/maintenance/cleanup",
+      "mounted": true,
+      "function": "cleanup_old_results",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 330
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/quick/dataset-processing",
+      "mounted": true,
+      "function": "submit_dataset_processing",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 353
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/quick/daily-report",
+      "mounted": true,
+      "function": "submit_daily_report",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 387
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/quick/market-analysis",
+      "mounted": true,
+      "function": "submit_market_analysis",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 414
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/quick/data-cleanup",
+      "mounted": true,
+      "function": "submit_data_cleanup",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 437
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/dashboard",
+      "mounted": true,
+      "function": "get_dashboard_data",
+      "source": "app/common/web/task_queue_router.py",
+      "line": 460
+    },
+    {
+      "method": "WEBSOCKET",
+      "path": "/ws/realtime",
+      "mounted": true,
+      "function": "websocket_realtime_endpoint",
+      "source": "app/common/web/websocket_router.py",
+      "line": 27
+    },
+    {
+      "method": "GET",
+      "path": "/ws/status",
+      "mounted": true,
+      "function": "get_websocket_status",
+      "source": "app/common/web/websocket_router.py",
+      "line": 293
+    },
+    {
+      "method": "GET",
+      "path": "/ws/clients",
+      "mounted": true,
+      "function": "get_connected_clients",
+      "source": "app/common/web/websocket_router.py",
+      "line": 312
+    },
+    {
+      "method": "POST",
+      "path": "/ws/broadcast",
+      "mounted": true,
+      "function": "broadcast_message",
+      "source": "app/common/web/websocket_router.py",
+      "line": 323
+    },
+    {
+      "method": "POST",
+      "path": "/ws/streaming/start",
+      "mounted": true,
+      "function": "start_price_streaming",
+      "source": "app/common/web/websocket_router.py",
+      "line": 371
+    },
+    {
+      "method": "POST",
+      "path": "/ws/streaming/stop",
+      "mounted": true,
+      "function": "stop_price_streaming",
+      "source": "app/common/web/websocket_router.py",
+      "line": 397
+    },
+    {
+      "method": "GET",
+      "path": "/ws/demo",
+      "mounted": true,
+      "function": "websocket_demo",
+      "source": "app/common/web/websocket_router.py",
+      "line": 412
+    },
+    {
+      "method": "GET",
+      "path": "/api/financials/financials/{symbol}",
+      "mounted": true,
+      "function": "get_financials",
+      "source": "app/company/web/route/financial_router.py",
+      "line": 90
+    },
+    {
+      "method": "GET",
+      "path": "/api/symbols/symbols",
+      "mounted": true,
+      "function": "get_symbols",
+      "source": "app/company/web/route/symbol_router.py",
+      "line": 79
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/market-price/current/{symbol}",
+      "mounted": false,
+      "function": "get_current_price_async",
+      "source": "app/market_price/web/async_price_router.py",
+      "line": 106
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/market-price/batch/current",
+      "mounted": false,
+      "function": "get_batch_current_prices_async",
+      "source": "app/market_price/web/async_price_router.py",
+      "line": 168
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/market-price/history/{symbol}",
+      "mounted": false,
+      "function": "get_price_history_async",
+      "source": "app/market_price/web/async_price_router.py",
+      "line": 218
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/market-price/monitor/batch",
+      "mounted": false,
+      "function": "monitor_batch_prices_async",
+      "source": "app/market_price/web/async_price_router.py",
+      "line": 273
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/market-price/data-collection/background",
+      "mounted": false,
+      "function": "queue_background_data_collection",
+      "source": "app/market_price/web/async_price_router.py",
+      "line": 321
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/market-price/snapshots/summary",
+      "mounted": false,
+      "function": "get_snapshots_summary_async",
+      "source": "app/market_price/web/async_price_router.py",
+      "line": 374
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/market-price/high-records/summary",
+      "mounted": false,
+      "function": "get_high_records_summary_async",
+      "source": "app/market_price/web/async_price_router.py",
+      "line": 414
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/market-price/cache/stats",
+      "mounted": false,
+      "function": "get_price_cache_statistics",
+      "source": "app/market_price/web/async_price_router.py",
+      "line": 457
+    },
+    {
+      "method": "POST",
+      "path": "/api/messages/",
+      "mounted": true,
+      "function": "send_message",
+      "source": "app/message_notification/web/route/message_router.py",
+      "line": 52
+    },
+    {
+      "method": "POST",
+      "path": "/api/ml-prediction/train",
+      "mounted": true,
+      "function": "train_model",
+      "source": "app/ml_prediction/web/route/ml_prediction_router.py",
+      "line": 153
+    },
+    {
+      "method": "POST",
+      "path": "/api/ml-prediction/predict",
+      "mounted": true,
+      "function": "predict_prices",
+      "source": "app/ml_prediction/web/route/ml_prediction_router.py",
+      "line": 274
+    },
+    {
+      "method": "GET",
+      "path": "/api/ml-prediction/status",
+      "mounted": true,
+      "function": "get_service_status",
+      "source": "app/ml_prediction/web/route/ml_prediction_router.py",
+      "line": 334
+    },
+    {
+      "method": "GET",
+      "path": "/api/ml-prediction/health",
+      "mounted": true,
+      "function": "health_check",
+      "source": "app/ml_prediction/web/route/ml_prediction_router.py",
+      "line": 377
+    },
+    {
+      "method": "GET",
+      "path": "/api/ml-prediction/info",
+      "mounted": true,
+      "function": "get_system_info",
+      "source": "app/ml_prediction/web/route/ml_prediction_router.py",
+      "line": 446
+    },
+    {
+      "method": "POST",
+      "path": "/test/news/{symbol}",
+      "mounted": true,
+      "function": "crawl_and_save_news",
+      "source": "app/news_crawler/web/route/news_test_router.py",
+      "line": 49
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/reports/comprehensive/background",
+      "mounted": false,
+      "function": "generate_comprehensive_report_background",
+      "source": "app/technical_analysis/web/report_router.py",
+      "line": 27
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/reports/status/{task_id}",
+      "mounted": false,
+      "function": "get_report_generation_status",
+      "source": "app/technical_analysis/web/report_router.py",
+      "line": 92
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/reports/result/{task_id}",
+      "mounted": false,
+      "function": "get_report_generation_result",
+      "source": "app/technical_analysis/web/report_router.py",
+      "line": 129
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/reports/daily/schedule",
+      "mounted": false,
+      "function": "schedule_daily_reports",
+      "source": "app/technical_analysis/web/report_router.py",
+      "line": 166
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/reports/queue/status",
+      "mounted": false,
+      "function": "get_report_queue_status",
+      "source": "app/technical_analysis/web/report_router.py",
+      "line": 212
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/reports/batch/comprehensive",
+      "mounted": false,
+      "function": "generate_batch_comprehensive_reports",
+      "source": "app/technical_analysis/web/report_router.py",
+      "line": 235
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v2/reports/task/{task_id}",
+      "mounted": false,
+      "function": "cancel_report_generation_task",
+      "source": "app/technical_analysis/web/report_router.py",
+      "line": 305
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/advanced/similarity-matrix/{symbol}",
+      "mounted": true,
+      "function": "get_pattern_similarity_matrix",
+      "source": "app/technical_analysis/web/route/advanced_pattern_router.py",
+      "line": 76
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/advanced/clustering/{symbol}",
+      "mounted": true,
+      "function": "cluster_patterns",
+      "source": "app/technical_analysis/web/route/advanced_pattern_router.py",
+      "line": 106
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/advanced/temporal-analysis/{symbol}",
+      "mounted": true,
+      "function": "analyze_temporal_patterns",
+      "source": "app/technical_analysis/web/route/advanced_pattern_router.py",
+      "line": 138
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/advanced/health",
+      "mounted": true,
+      "function": "health_check",
+      "source": "app/technical_analysis/web/route/advanced_pattern_router.py",
+      "line": 172
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/async/symbols/{symbol}/price",
+      "mounted": true,
+      "function": "get_symbol_price",
+      "source": "app/technical_analysis/web/route/async_api_router.py",
+      "line": 53
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/async/symbols/batch",
+      "mounted": true,
+      "function": "get_batch_prices",
+      "source": "app/technical_analysis/web/route/async_api_router.py",
+      "line": 110
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/async/technical/analysis/{symbol}",
+      "mounted": true,
+      "function": "get_technical_analysis",
+      "source": "app/technical_analysis/web/route/async_api_router.py",
+      "line": 149
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/technical-analysis/indicators/{symbol}",
+      "mounted": true,
+      "function": "calculate_technical_indicators_async",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 40
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/technical-analysis/batch/indicators",
+      "mounted": true,
+      "function": "calculate_batch_technical_indicators_async",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 176
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/technical-analysis/prices/monitor",
+      "mounted": true,
+      "function": "monitor_prices_async",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 260
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/technical-analysis/prices/batch",
+      "mounted": true,
+      "function": "get_batch_prices_async",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 332
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/technical-analysis/analysis/comprehensive",
+      "mounted": true,
+      "function": "comprehensive_analysis_async",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 415
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/technical-analysis/analysis/background",
+      "mounted": true,
+      "function": "queue_background_analysis",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 542
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/technical-analysis/analysis/status/{task_id}",
+      "mounted": true,
+      "function": "get_background_analysis_status",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 597
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/technical-analysis/cache/stats",
+      "mounted": true,
+      "function": "get_cache_statistics",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 630
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/technical-analysis/streaming/start",
+      "mounted": true,
+      "function": "start_technical_analysis_streaming",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 657
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/technical-analysis/alerts/subscribe",
+      "mounted": true,
+      "function": "subscribe_to_technical_alerts",
+      "source": "app/technical_analysis/web/route/async_technical_router.py",
+      "line": 832
+    },
+    {
+      "method": "POST",
+      "path": "/api/daily-report/generate",
+      "mounted": true,
+      "function": "generate_daily_report",
+      "source": "app/technical_analysis/web/route/daily_report_router.py",
+      "line": 46
+    },
+    {
+      "method": "GET",
+      "path": "/api/daily-report/preview",
+      "mounted": true,
+      "function": "preview_daily_report",
+      "source": "app/technical_analysis/web/route/daily_report_router.py",
+      "line": 84
+    },
+    {
+      "method": "GET",
+      "path": "/api/daily-report/status",
+      "mounted": true,
+      "function": "get_report_status",
+      "source": "app/technical_analysis/web/route/daily_report_router.py",
+      "line": 138
+    },
+    {
+      "method": "GET",
+      "path": "/api/daily-report/health",
+      "mounted": true,
+      "function": "health_check",
+      "source": "app/technical_analysis/web/route/daily_report_router.py",
+      "line": 191
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/outcomes/tracking/summary",
+      "mounted": true,
+      "function": "get_tracking_summary",
+      "source": "app/technical_analysis/web/route/outcome_analysis_router.py",
+      "line": 73
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/outcomes/tracking/pending",
+      "mounted": true,
+      "function": "get_pending_outcomes",
+      "source": "app/technical_analysis/web/route/outcome_analysis_router.py",
+      "line": 100
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/outcomes/performance/by-signal-type",
+      "mounted": true,
+      "function": "get_performance_by_signal_type",
+      "source": "app/technical_analysis/web/route/outcome_analysis_router.py",
+      "line": 145
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/outcomes/performance/top-performers",
+      "mounted": true,
+      "function": "get_top_performers",
+      "source": "app/technical_analysis/web/route/outcome_analysis_router.py",
+      "line": 184
+    },
+    {
+      "method": "POST",
+      "path": "/api/technical-analysis/outcomes/backtesting/simple",
+      "mounted": true,
+      "function": "run_simple_backtesting",
+      "source": "app/technical_analysis/web/route/outcome_analysis_router.py",
+      "line": 218
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/outcomes/monitoring/dashboard",
+      "mounted": true,
+      "function": "get_dashboard_data",
+      "source": "app/technical_analysis/web/route/outcome_analysis_router.py",
+      "line": 266
+    },
+    {
+      "method": "POST",
+      "path": "/api/technical-analysis/outcomes/tracking/update",
+      "mounted": true,
+      "function": "manual_update_tracking",
+      "source": "app/technical_analysis/web/route/outcome_analysis_router.py",
+      "line": 292
+    },
+    {
+      "method": "POST",
+      "path": "/api/technical-analysis/patterns/discover/{symbol}",
+      "mounted": true,
+      "function": "discover_patterns",
+      "source": "app/technical_analysis/web/route/pattern_analysis_router.py",
+      "line": 55
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/patterns/analysis",
+      "mounted": true,
+      "function": "get_pattern_analysis",
+      "source": "app/technical_analysis/web/route/pattern_analysis_router.py",
+      "line": 99
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/patterns/successful",
+      "mounted": true,
+      "function": "get_successful_patterns",
+      "source": "app/technical_analysis/web/route/pattern_analysis_router.py",
+      "line": 143
+    },
+    {
+      "method": "POST",
+      "path": "/api/technical-analysis/patterns/test/{symbol}",
+      "mounted": true,
+      "function": "test_pattern_analysis",
+      "source": "app/technical_analysis/web/route/pattern_analysis_router.py",
+      "line": 191
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/technical-analysis/patterns/test/{symbol}",
+      "mounted": true,
+      "function": "cleanup_test_patterns",
+      "source": "app/technical_analysis/web/route/pattern_analysis_router.py",
+      "line": 226
+    },
+    {
+      "method": "POST",
+      "path": "/api/recovery/historical-data",
+      "mounted": true,
+      "function": "recover_historical_data",
+      "source": "app/technical_analysis/web/route/recovery_router.py",
+      "line": 44
+    },
+    {
+      "method": "POST",
+      "path": "/api/recovery/technical-analysis",
+      "mounted": true,
+      "function": "recover_technical_analysis",
+      "source": "app/technical_analysis/web/route/recovery_router.py",
+      "line": 115
+    },
+    {
+      "method": "POST",
+      "path": "/api/recovery/full-recovery",
+      "mounted": true,
+      "function": "full_recovery",
+      "source": "app/technical_analysis/web/route/recovery_router.py",
+      "line": 195
+    },
+    {
+      "method": "GET",
+      "path": "/api/recovery/status",
+      "mounted": true,
+      "function": "get_recovery_status",
+      "source": "app/technical_analysis/web/route/recovery_router.py",
+      "line": 250
+    },
+    {
+      "method": "GET",
+      "path": "/api/recovery/data-summary",
+      "mounted": true,
+      "function": "get_data_summary",
+      "source": "app/technical_analysis/web/route/recovery_router.py",
+      "line": 271
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/recovery/cleanup",
+      "mounted": true,
+      "function": "cleanup_test_data",
+      "source": "app/technical_analysis/web/route/recovery_router.py",
+      "line": 297
+    },
+    {
+      "method": "GET",
+      "path": "/api/recovery/health",
+      "mounted": true,
+      "function": "health_check",
+      "source": "app/technical_analysis/web/route/recovery_router.py",
+      "line": 331
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/signals",
+      "mounted": true,
+      "function": "get_recent_signals",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 95
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/signals/{symbol}",
+      "mounted": true,
+      "function": "get_signals_by_symbol",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 177
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/stats/signal-count",
+      "mounted": true,
+      "function": "get_signal_count_stats",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 259
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/stats/daily-count/{symbol}",
+      "mounted": true,
+      "function": "get_daily_signal_count",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 338
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/stats/signal-strength/{signal_type}",
+      "mounted": true,
+      "function": "get_signal_strength_stats",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 389
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/current-status/{symbol}/{timeframe}",
+      "mounted": true,
+      "function": "get_current_technical_status",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 441
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/performance/all",
+      "mounted": true,
+      "function": "get_all_signals_performance",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 495
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/performance/{signal_type}",
+      "mounted": true,
+      "function": "get_signal_type_performance",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 533
+    },
+    {
+      "method": "POST",
+      "path": "/api/technical-analysis/signals/backtest/strategy",
+      "mounted": true,
+      "function": "backtest_trading_strategy",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 578
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/quality/{signal_type}",
+      "mounted": true,
+      "function": "evaluate_signal_quality",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 639
+    },
+    {
+      "method": "POST",
+      "path": "/api/technical-analysis/signals/outcomes/track/{signal_id}",
+      "mounted": true,
+      "function": "start_outcome_tracking",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 681
+    },
+    {
+      "method": "PUT",
+      "path": "/api/technical-analysis/signals/outcomes/update",
+      "mounted": true,
+      "function": "update_outcomes",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 718
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/signals/outcomes/{signal_id}",
+      "mounted": true,
+      "function": "get_signal_outcome",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 748
+    },
+    {
+      "method": "POST",
+      "path": "/api/technical-analysis/signals/outcomes/test/{signal_id}",
+      "mounted": true,
+      "function": "test_outcome_tracking",
+      "source": "app/technical_analysis/web/route/signal_analysis_router.py",
+      "line": 781
+    },
+    {
+      "method": "POST",
+      "path": "/api/test/telegram-alerts/all",
+      "mounted": true,
+      "function": "test_all_alerts",
+      "source": "app/technical_analysis/web/route/test_router.py",
+      "line": 62
+    },
+    {
+      "method": "POST",
+      "path": "/api/test/telegram-alerts/ma-breakout",
+      "mounted": true,
+      "function": "test_ma_breakout_alert",
+      "source": "app/technical_analysis/web/route/test_router.py",
+      "line": 91
+    },
+    {
+      "method": "POST",
+      "path": "/api/test/telegram-alerts/rsi",
+      "mounted": true,
+      "function": "test_rsi_alert",
+      "source": "app/technical_analysis/web/route/test_router.py",
+      "line": 151
+    },
+    {
+      "method": "POST",
+      "path": "/api/test/telegram-alerts/cross",
+      "mounted": true,
+      "function": "test_cross_alert",
+      "source": "app/technical_analysis/web/route/test_router.py",
+      "line": 199
+    },
+    {
+      "method": "POST",
+      "path": "/api/test/telegram-alerts/bollinger",
+      "mounted": true,
+      "function": "test_bollinger_alert",
+      "source": "app/technical_analysis/web/route/test_router.py",
+      "line": 241
+    },
+    {
+      "method": "GET",
+      "path": "/api/test/env-check",
+      "mounted": true,
+      "function": "check_environment",
+      "source": "app/technical_analysis/web/route/test_router.py",
+      "line": 295
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/utils/health",
+      "mounted": true,
+      "function": "health_check",
+      "source": "app/technical_analysis/web/route/utility_router.py",
+      "line": 56
+    },
+    {
+      "method": "GET",
+      "path": "/api/technical-analysis/utils/signal-types",
+      "mounted": true,
+      "function": "get_supported_signal_types",
+      "source": "app/technical_analysis/web/route/utility_router.py",
+      "line": 102
+    }
+  ],
+  "tables": [
+    {
+      "table": "slow_query_logs",
+      "source": "app/common/infra/database/models/slow_query_log.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(Integer, primary_key=True, autoincrement=True)"
+        },
+        {
+          "name": "query_hash",
+          "definition": "Column(String(32), nullable=False, index=True, comment='쿼리 해시 (정규화된 쿼리 식별자)')"
+        },
+        {
+          "name": "query_template",
+          "definition": "Column(Text, nullable=False, comment='정규화된 쿼리 템플릿')"
+        },
+        {
+          "name": "original_query",
+          "definition": "Column(Text, nullable=True, comment='원본 쿼리 (최대 2000자)')"
+        },
+        {
+          "name": "duration",
+          "definition": "Column(Float, nullable=False, index=True, comment='실행 시간 (초)')"
+        },
+        {
+          "name": "affected_rows",
+          "definition": "Column(Integer, default=0, comment='영향받은 행 수')"
+        },
+        {
+          "name": "table_names",
+          "definition": "Column(String(500), nullable=True, comment='관련 테이블명들 (쉼표 구분)')"
+        },
+        {
+          "name": "operation_type",
+          "definition": "Column(String(20), nullable=True, index=True, comment='쿼리 타입 (SELECT, INSERT, etc.)')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, default=func.now(), nullable=False, index=True, comment='기록 시간')"
+        },
+        {
+          "name": "execution_timestamp",
+          "definition": "Column(DateTime, nullable=False, index=True, comment='쿼리 실행 시간')"
+        }
+      ]
+    },
+    {
+      "table": "balance_sheets",
+      "source": "app/company/infra/model/financial/entity/balance_sheet.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(Integer, primary_key=True, index=True)"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(16), index=True)"
+        },
+        {
+          "name": "date",
+          "definition": "Column(Date)"
+        },
+        {
+          "name": "total_assets",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "total_liabilities",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "total_equity",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "cash_and_equivalents",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "inventory",
+          "definition": "Column(Float)"
+        }
+      ]
+    },
+    {
+      "table": "cash_flow_statements",
+      "source": "app/company/infra/model/financial/entity/cash_flow_statement.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(Integer, primary_key=True, index=True)"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(16), index=True)"
+        },
+        {
+          "name": "date",
+          "definition": "Column(Date)"
+        },
+        {
+          "name": "operating_cash_flow",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "investing_cash_flow",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "financing_cash_flow",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "free_cash_flow",
+          "definition": "Column(Float)"
+        }
+      ]
+    },
+    {
+      "table": "income_statements",
+      "source": "app/company/infra/model/financial/entity/income_statement.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(Integer, primary_key=True, index=True)"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(16), index=True)"
+        },
+        {
+          "name": "date",
+          "definition": "Column(Date)"
+        },
+        {
+          "name": "revenue",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "cost_of_revenue",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "gross_profit",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "operating_income",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "net_income",
+          "definition": "Column(Float)"
+        },
+        {
+          "name": "eps",
+          "definition": "Column(Float)"
+        }
+      ]
+    },
+    {
+      "table": "symbols",
+      "source": "app/company/infra/model/symbol/entity/symbol.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(Integer, primary_key=True, autoincrement=True)"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(10), nullable=False, unique=True)"
+        },
+        {
+          "name": "name",
+          "definition": "Column(String(255), nullable=False)"
+        },
+        {
+          "name": "country",
+          "definition": "Column(String(100), nullable=True)"
+        },
+        {
+          "name": "korea_name",
+          "definition": "Column(String(255), nullable=True)"
+        }
+      ]
+    },
+    {
+      "table": "price_alert_logs",
+      "source": "app/market_price/infra/model/entity/price_alert_log.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='PK')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(20), nullable=False, index=True, comment='종목 코드 (예: AAPL, ^GSPC 등)')"
+        },
+        {
+          "name": "alert_type",
+          "definition": "Column(String(30), nullable=False, comment='\\n    알림 종류\\n    - price_rise: 전일 종가 기준 급등 (기준 등락률 이상 상승)\\n    - price_drop: 전일 종가 기준 급락 (기준 등락률 이하 하락)\\n    - new_high: 상장 후 최고가 갱신\\n    - drop_from_high: 상장 후 최고가 대비 급락 (기준 등락률 이하 하락)\\n    - break_prev_high: 전일 고점 돌파\\n    - break_prev_low: 전일 저점 하회\\n    ')"
+        },
+        {
+          "name": "base_type",
+          "definition": "Column(String(30), nullable=False, comment='\\n    기준 가격 종류\\n    - prev_close: 전일 종가 기준\\n    - all_time_high: 상장 후 최고가 기준\\n    - prev_high: 전일 고점 기준\\n    - prev_low: 전일 저점 기준\\n    ')"
+        },
+        {
+          "name": "base_price",
+          "definition": "Column(Float, nullable=False, comment='비교 기준 가격 (예: 전일 종가, 최고가, 고점, 저점)')"
+        },
+        {
+          "name": "current_price",
+          "definition": "Column(Float, nullable=False, comment='현재 시세')"
+        },
+        {
+          "name": "threshold_percent",
+          "definition": "Column(Float, nullable=False, comment='알림 기준 등락률 (예: 5.0)')"
+        },
+        {
+          "name": "actual_percent",
+          "definition": "Column(Float, nullable=False, comment='실제 변동률 (예: -5.8)')"
+        },
+        {
+          "name": "base_time",
+          "definition": "Column(DateTime, nullable=False, comment='기준 가격 발생 시각 (예: 종가, 최고가, 고점 등)')"
+        },
+        {
+          "name": "triggered_at",
+          "definition": "Column(DateTime, nullable=False, default=datetime.utcnow, comment='알림 발생 시각')"
+        }
+      ]
+    },
+    {
+      "table": "price_high_records",
+      "source": "app/market_price/infra/model/entity/price_high_records.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True)"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(20), nullable=False, index=True, comment='종목 코드')"
+        },
+        {
+          "name": "source",
+          "definition": "Column(String(30), nullable=False, comment='데이터 제공자 (예: yahoo)')"
+        },
+        {
+          "name": "price",
+          "definition": "Column(Float, nullable=False, comment='기록된 최고가')"
+        },
+        {
+          "name": "recorded_at",
+          "definition": "Column(DateTime, nullable=False, comment='해당 고점이 기록된 시점')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, nullable=False, default=datetime.utcnow, comment='기록 저장 시각')"
+        }
+      ]
+    },
+    {
+      "table": "price_snapshots",
+      "source": "app/market_price/infra/model/entity/price_snapshots.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='PK')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(20), nullable=False, index=True, comment='종목 코드 (예: AAPL, ^IXIC)')"
+        },
+        {
+          "name": "source",
+          "definition": "Column(String(30), nullable=False, comment='데이터 제공자 (예: yahoo, investing)')"
+        },
+        {
+          "name": "close",
+          "definition": "Column(Float, nullable=True, comment='종가')"
+        },
+        {
+          "name": "high",
+          "definition": "Column(Float, nullable=True, comment='고가')"
+        },
+        {
+          "name": "low",
+          "definition": "Column(Float, nullable=True, comment='저가')"
+        },
+        {
+          "name": "volume",
+          "definition": "Column(Float, nullable=True, comment='거래량')"
+        },
+        {
+          "name": "snapshot_at",
+          "definition": "Column(DateTime, nullable=False, comment='가격 기준 시각 (예: 2024-07-08 00:00)')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, nullable=False, default=datetime.utcnow, comment='저장된 시각')"
+        }
+      ]
+    },
+    {
+      "table": "message_logs",
+      "source": "app/message_notification/infra/model/entity/message_log.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='PK')"
+        },
+        {
+          "name": "message",
+          "definition": "Column(String(1000), nullable=False, comment='전송된 메시지 내용')"
+        },
+        {
+          "name": "sent_at",
+          "definition": "Column(DateTime, default=datetime.utcnow, nullable=False, comment='메시지 전송 시각')"
+        }
+      ]
+    },
+    {
+      "table": "ml_models",
+      "source": "app/ml_prediction/infra/model/entity/ml_model.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='ML 모델 고유 ID')"
+        },
+        {
+          "name": "model_name",
+          "definition": "Column(String(100), nullable=False, comment='모델 이름 (예: nasdaq_lstm_v1)')"
+        },
+        {
+          "name": "model_version",
+          "definition": "Column(String(50), nullable=False, comment='모델 버전 (예: v1.0.0)')"
+        },
+        {
+          "name": "model_type",
+          "definition": "Column(String(20), nullable=False, comment='모델 타입 (lstm, gru, transformer)')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(10), nullable=False, comment='대상 심볼 (^IXIC, ^GSPC)')"
+        },
+        {
+          "name": "model_path",
+          "definition": "Column(String(500), nullable=False, comment='모델 파일 저장 경로')"
+        },
+        {
+          "name": "model_format",
+          "definition": "Column(String(20), nullable=False, default='keras', comment='모델 파일 형식 (keras, tensorflow, onnx)')"
+        },
+        {
+          "name": "model_size_mb",
+          "definition": "Column(DECIMAL(10, 2), nullable=True, comment='모델 파일 크기 (MB)')"
+        },
+        {
+          "name": "checksum",
+          "definition": "Column(String(64), nullable=True, comment='모델 파일 체크섬 (무결성 검증용)')"
+        },
+        {
+          "name": "training_start_date",
+          "definition": "Column(DateTime, nullable=False, comment='훈련 시작 시점')"
+        },
+        {
+          "name": "training_end_date",
+          "definition": "Column(DateTime, nullable=False, comment='훈련 완료 시점')"
+        },
+        {
+          "name": "training_duration_minutes",
+          "definition": "Column(Integer, nullable=True, comment='훈련 소요 시간 (분)')"
+        },
+        {
+          "name": "epochs_trained",
+          "definition": "Column(Integer, nullable=False, comment='실제 훈련된 에포크 수')"
+        },
+        {
+          "name": "early_stopped",
+          "definition": "Column(Boolean, nullable=False, default=False, comment='조기 종료 여부')"
+        },
+        {
+          "name": "training_data_start_date",
+          "definition": "Column(DateTime, nullable=False, comment='훈련 데이터 시작 날짜')"
+        },
+        {
+          "name": "training_data_end_date",
+          "definition": "Column(DateTime, nullable=False, comment='훈련 데이터 종료 날짜')"
+        },
+        {
+          "name": "training_samples",
+          "definition": "Column(BigInteger, nullable=False, comment='훈련 샘플 수')"
+        },
+        {
+          "name": "validation_samples",
+          "definition": "Column(BigInteger, nullable=False, comment='검증 샘플 수')"
+        },
+        {
+          "name": "test_samples",
+          "definition": "Column(BigInteger, nullable=False, comment='테스트 샘플 수')"
+        },
+        {
+          "name": "feature_count",
+          "definition": "Column(Integer, nullable=False, comment='사용된 특성 개수')"
+        },
+        {
+          "name": "window_size",
+          "definition": "Column(Integer, nullable=False, comment='시계열 윈도우 크기')"
+        },
+        {
+          "name": "performance_7d_mse",
+          "definition": "Column(DECIMAL(12, 8), nullable=True, comment='7일 예측 MSE (Mean Squared Error)')"
+        },
+        {
+          "name": "performance_7d_mae",
+          "definition": "Column(DECIMAL(12, 8), nullable=True, comment='7일 예측 MAE (Mean Absolute Error)')"
+        },
+        {
+          "name": "performance_7d_direction_accuracy",
+          "definition": "Column(DECIMAL(5, 4), nullable=True, comment='7일 예측 방향 정확도 (0.0 ~ 1.0)')"
+        },
+        {
+          "name": "performance_14d_mse",
+          "definition": "Column(DECIMAL(12, 8), nullable=True, comment='14일 예측 MSE')"
+        },
+        {
+          "name": "performance_14d_mae",
+          "definition": "Column(DECIMAL(12, 8), nullable=True, comment='14일 예측 MAE')"
+        },
+        {
+          "name": "performance_14d_direction_accuracy",
+          "definition": "Column(DECIMAL(5, 4), nullable=True, comment='14일 예측 방향 정확도')"
+        },
+        {
+          "name": "performance_30d_mse",
+          "definition": "Column(DECIMAL(12, 8), nullable=True, comment='30일 예측 MSE')"
+        },
+        {
+          "name": "performance_30d_mae",
+          "definition": "Column(DECIMAL(12, 8), nullable=True, comment='30일 예측 MAE')"
+        },
+        {
+          "name": "performance_30d_direction_accuracy",
+          "definition": "Column(DECIMAL(5, 4), nullable=True, comment='30일 예측 방향 정확도')"
+        },
+        {
+          "name": "overall_performance_score",
+          "definition": "Column(DECIMAL(5, 4), nullable=True, comment='종합 성능 점수 (0.0 ~ 1.0)')"
+        },
+        {
+          "name": "hyperparameters",
+          "definition": "Column(Text, nullable=True, comment='하이퍼파라미터 정보 (JSON 형태)')"
+        },
+        {
+          "name": "model_architecture",
+          "definition": "Column(Text, nullable=True, comment='모델 구조 정보 (JSON 형태)')"
+        },
+        {
+          "name": "training_config",
+          "definition": "Column(Text, nullable=True, comment='훈련 설정 정보 (JSON 형태)')"
+        },
+        {
+          "name": "status",
+          "definition": "Column(String(20), nullable=False, default='training', comment='모델 상태 (training, active, deprecated, failed)')"
+        },
+        {
+          "name": "is_active",
+          "definition": "Column(Boolean, nullable=False, default=False, comment='현재 활성 모델 여부')"
+        },
+        {
+          "name": "deployed_at",
+          "definition": "Column(DateTime, nullable=True, comment='배포 시점')"
+        },
+        {
+          "name": "deprecated_at",
+          "definition": "Column(DateTime, nullable=True, comment='사용 중단 시점')"
+        },
+        {
+          "name": "description",
+          "definition": "Column(Text, nullable=True, comment='모델 설명')"
+        },
+        {
+          "name": "created_by",
+          "definition": "Column(String(100), nullable=True, comment='모델 생성자')"
+        },
+        {
+          "name": "tags",
+          "definition": "Column(Text, nullable=True, comment='모델 태그 (JSON 배열)')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, default=func.now(), comment='레코드 생성 시점')"
+        },
+        {
+          "name": "updated_at",
+          "definition": "Column(DateTime, default=func.now(), onupdate=func.now(), comment='레코드 수정 시점')"
+        }
+      ]
+    },
+    {
+      "table": "ml_predictions",
+      "source": "app/ml_prediction/infra/model/entity/ml_prediction.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='ML 예측 결과 고유 ID')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(10), nullable=False, comment='심볼 (^IXIC: 나스닥, ^GSPC: S&P 500)')"
+        },
+        {
+          "name": "prediction_date",
+          "definition": "Column(Date, nullable=False, comment='예측을 수행한 날짜')"
+        },
+        {
+          "name": "prediction_timeframe",
+          "definition": "Column(String(10), nullable=False, comment='예측 기간 (7d, 14d, 30d)')"
+        },
+        {
+          "name": "target_date",
+          "definition": "Column(Date, nullable=False, comment='예측 대상 날짜 (prediction_date + timeframe)')"
+        },
+        {
+          "name": "batch_id",
+          "definition": "Column(String(50), nullable=False, comment='동시 예측 배치 ID (같은 요청의 7d/14d/30d 연결)')"
+        },
+        {
+          "name": "current_price",
+          "definition": "Column(DECIMAL(12, 4), nullable=False, comment='예측 시점의 현재 가격')"
+        },
+        {
+          "name": "predicted_price",
+          "definition": "Column(DECIMAL(12, 4), nullable=False, comment='예측된 미래 가격')"
+        },
+        {
+          "name": "predicted_direction",
+          "definition": "Column(String(10), nullable=False, comment='예측 방향 (up, down, neutral)')"
+        },
+        {
+          "name": "price_change_percent",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='예상 가격 변화율 (%)')"
+        },
+        {
+          "name": "confidence_score",
+          "definition": "Column(DECIMAL(5, 4), nullable=False, comment='예측 신뢰도 점수 (0.0 ~ 1.0)')"
+        },
+        {
+          "name": "actual_price",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='실제 가격 (target_date에 업데이트)')"
+        },
+        {
+          "name": "actual_direction",
+          "definition": "Column(String(10), nullable=True, comment='실제 방향 (up, down, neutral)')"
+        },
+        {
+          "name": "actual_change_percent",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='실제 가격 변화율 (%)')"
+        },
+        {
+          "name": "is_direction_correct",
+          "definition": "Column(Boolean, nullable=True, comment='방향 예측 정확 여부')"
+        },
+        {
+          "name": "price_error_percent",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='가격 예측 오차율 (%)')"
+        },
+        {
+          "name": "model_version",
+          "definition": "Column(String(50), nullable=False, comment='사용된 모델 버전')"
+        },
+        {
+          "name": "model_type",
+          "definition": "Column(String(20), nullable=False, default='lstm', comment='모델 타입 (lstm, gru, transformer)')"
+        },
+        {
+          "name": "features_used",
+          "definition": "Column(Text, nullable=True, comment='사용된 특성 정보 (JSON 형태)')"
+        },
+        {
+          "name": "feature_count",
+          "definition": "Column(BigInteger, nullable=True, comment='사용된 특성 개수')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, default=func.now(), comment='레코드 생성 시점')"
+        },
+        {
+          "name": "updated_at",
+          "definition": "Column(DateTime, default=func.now(), onupdate=func.now(), comment='레코드 수정 시점')"
+        },
+        {
+          "name": "result_updated_at",
+          "definition": "Column(DateTime, nullable=True, comment='실제 결과 업데이트 시점')"
+        }
+      ]
+    },
+    {
+      "table": "contents",
+      "source": "app/news_crawler/infra/model/entity/content.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='PK')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(20), nullable=False, comment='종목 티커 (예: TSLA)')"
+        },
+        {
+          "name": "title",
+          "definition": "Column(Text, nullable=False, comment='기사 제목')"
+        },
+        {
+          "name": "summary",
+          "definition": "Column(Text, nullable=True, comment='기사 요약 또는 본문 일부')"
+        },
+        {
+          "name": "url",
+          "definition": "Column(Text, nullable=False, comment='기사 원본 URL')"
+        },
+        {
+          "name": "html",
+          "definition": "Column(Text, nullable=False, comment='기사 원본 URL')"
+        },
+        {
+          "name": "source",
+          "definition": "Column(String(255), nullable=True, comment='출처 도메인 (예: reuters.com)')"
+        },
+        {
+          "name": "crawled_at",
+          "definition": "Column(DateTime, nullable=False, default=datetime.utcnow, comment='크롤링 시각')"
+        },
+        {
+          "name": "published_at",
+          "definition": "Column(DateTime, nullable=False, default=datetime.utcnow, comment='기사 발행 시각')"
+        },
+        {
+          "name": "content_hash",
+          "definition": "Column(String(64), nullable=False, unique=True, comment='중복 방지를 위한 콘텐츠 해시')"
+        }
+      ]
+    },
+    {
+      "table": "content_sentiments",
+      "source": "app/news_crawler/infra/model/entity/content_sentiments.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='PK')"
+        },
+        {
+          "name": "content_id",
+          "definition": "Column(BigInteger, ForeignKey('contents.id', ondelete='CASCADE'), nullable=False, comment='원본 콘텐츠 FK')"
+        },
+        {
+          "name": "sentiment_score",
+          "definition": "Column(Float, nullable=False, comment='감정 점수 (-1.0 ~ +1.0)')"
+        },
+        {
+          "name": "sentiment_label",
+          "definition": "Column(String(20), nullable=False, comment='감정 라벨 (positive, negative, neutral)')"
+        },
+        {
+          "name": "confidence",
+          "definition": "Column(Float, nullable=False, comment='분석 신뢰도 (0.0 ~ 1.0)')"
+        },
+        {
+          "name": "positive_score",
+          "definition": "Column(Float, nullable=False, comment='긍정 점수 (0.0 ~ 1.0)')"
+        },
+        {
+          "name": "negative_score",
+          "definition": "Column(Float, nullable=False, comment='부정 점수 (0.0 ~ 1.0)')"
+        },
+        {
+          "name": "neutral_score",
+          "definition": "Column(Float, nullable=False, comment='중립 점수 (0.0 ~ 1.0)')"
+        },
+        {
+          "name": "compound_score",
+          "definition": "Column(Float, nullable=False, comment='복합 점수 (-1.0 ~ +1.0)')"
+        },
+        {
+          "name": "market_impact_score",
+          "definition": "Column(Float, nullable=True, comment='시장 영향도 점수 (-1.0 ~ +1.0)')"
+        },
+        {
+          "name": "is_market_sensitive",
+          "definition": "Column(Boolean, default=False, comment='시장 민감 뉴스 여부')"
+        },
+        {
+          "name": "analyzer_type",
+          "definition": "Column(String(50), nullable=False, default='vader', comment='사용한 분석기 (vader, textblob 등)')"
+        },
+        {
+          "name": "analyzed_at",
+          "definition": "Column(DateTime, nullable=False, default=datetime.utcnow, comment='분석 시각')"
+        }
+      ]
+    },
+    {
+      "table": "content_translations",
+      "source": "app/news_crawler/infra/model/entity/content_translations.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='PK')"
+        },
+        {
+          "name": "content_id",
+          "definition": "Column(BigInteger, ForeignKey('contents.id', ondelete='CASCADE'), nullable=False, comment='원본 콘텐츠 FK')"
+        },
+        {
+          "name": "language",
+          "definition": "Column(String(10), nullable=False, default='ko', comment='번역 언어 (예: ko)')"
+        },
+        {
+          "name": "title_translated",
+          "definition": "Column(Text, nullable=True, comment='번역된 제목')"
+        },
+        {
+          "name": "summary_translated",
+          "definition": "Column(Text, nullable=True, comment='번역된 요약')"
+        },
+        {
+          "name": "translator",
+          "definition": "Column(String(50), nullable=True, comment='사용한 번역기 (예: openai, deepl, papago 등)')"
+        },
+        {
+          "name": "translated_at",
+          "definition": "Column(DateTime, nullable=False, default=datetime.utcnow, comment='번역 시각')"
+        },
+        {
+          "name": "published_at",
+          "definition": "Column(DateTime, nullable=False, default=datetime.utcnow, comment='기사 발행 시각')"
+        }
+      ]
+    },
+    {
+      "table": "daily_prices",
+      "source": "app/technical_analysis/infra/model/entity/daily_prices.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='일봉 데이터 고유 ID')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(10), nullable=False, comment='심볼 (^IXIC: 나스닥, ^GSPC: S&P 500)')"
+        },
+        {
+          "name": "date",
+          "definition": "Column(Date, nullable=False, comment='거래일 (YYYY-MM-DD)')"
+        },
+        {
+          "name": "open_price",
+          "definition": "Column(DECIMAL(12, 4), nullable=False, comment='시가 (장 시작 가격)')"
+        },
+        {
+          "name": "high_price",
+          "definition": "Column(DECIMAL(12, 4), nullable=False, comment='고가 (하루 중 최고 가격)')"
+        },
+        {
+          "name": "low_price",
+          "definition": "Column(DECIMAL(12, 4), nullable=False, comment='저가 (하루 중 최저 가격)')"
+        },
+        {
+          "name": "close_price",
+          "definition": "Column(DECIMAL(12, 4), nullable=False, comment='종가 (장 마감 가격, 가장 중요!)')"
+        },
+        {
+          "name": "volume",
+          "definition": "Column(BigInteger, nullable=True, comment='거래량 (하루 총 거래된 주식 수)')"
+        },
+        {
+          "name": "price_change",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='\\n        가격 변화량 (종가 - 전일 종가)\\n        양수: 상승, 음수: 하락, 0: 보합\\n        ')"
+        },
+        {
+          "name": "price_change_percent",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        가격 변화율 (%)\\n        계산식: (종가 - 전일종가) / 전일종가 * 100\\n        ')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, default=func.now(), comment='레코드 생성 시점')"
+        },
+        {
+          "name": "updated_at",
+          "definition": "Column(DateTime, default=func.now(), onupdate=func.now(), comment='레코드 수정 시점')"
+        }
+      ]
+    },
+    {
+      "table": "pattern_clusters",
+      "source": "app/technical_analysis/infra/model/entity/pattern_clusters.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='클러스터 고유 ID')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(20), nullable=False, comment='클러스터링 대상 심볼 (예: ^IXIC, ^GSPC)')"
+        },
+        {
+          "name": "cluster_id",
+          "definition": "Column(Integer, nullable=False, comment='\\n        클러스터 번호 (0부터 시작)\\n        예: 0, 1, 2, 3, 4, 5 (총 6개 그룹으로 분류한 경우)\\n        ')"
+        },
+        {
+          "name": "cluster_name",
+          "definition": "Column(String(100), nullable=False, comment='\\n        클러스터 이름 (자동 생성)\\n        예시:\\n        - RSI_상승_패턴: RSI 기반 상승 신호 패턴들\\n        - MA_하락_패턴: 이동평균 기반 하락 신호 패턴들\\n        - 볼린저_중립_패턴: 볼린저밴드 기반 중립 패턴들\\n        - 복합_상승_패턴: 여러 지표 조합 상승 패턴들\\n        ')"
+        },
+        {
+          "name": "timeframe",
+          "definition": "Column(String(10), nullable=False, comment='클러스터링 시간대 (1min, 15min, 1day)')"
+        },
+        {
+          "name": "pattern_count",
+          "definition": "Column(Integer, nullable=False, comment='클러스터에 속한 패턴 개수')"
+        },
+        {
+          "name": "avg_success_rate",
+          "definition": "Column(DECIMAL(5, 2), nullable=True, comment='\\n        클러스터 평균 성공률 (%)\\n        클러스터 내 모든 패턴들의 성공률 평균\\n        예: 68.5 (68.5% 성공률)\\n        ')"
+        },
+        {
+          "name": "avg_confidence_score",
+          "definition": "Column(DECIMAL(5, 2), nullable=True, comment='\\n        클러스터 평균 신뢰도 점수 (0~100)\\n        클러스터 내 모든 패턴들의 신뢰도 점수 평균\\n        ')"
+        },
+        {
+          "name": "avg_duration_hours",
+          "definition": "Column(DECIMAL(8, 2), nullable=True, comment='\\n        클러스터 평균 패턴 지속 시간 (시간)\\n        클러스터 내 패턴들의 평균 지속 시간\\n        예: 4.5 (평균 4시간 30분)\\n        ')"
+        },
+        {
+          "name": "bullish_tendency",
+          "definition": "Column(DECIMAL(5, 2), nullable=True, comment='\\n        상승 성향 점수 (0~1)\\n        클러스터가 상승 패턴에 얼마나 치우쳐 있는지\\n        1.0: 완전한 상승 패턴 그룹\\n        0.0: 상승 패턴이 전혀 없음\\n        ')"
+        },
+        {
+          "name": "bearish_tendency",
+          "definition": "Column(DECIMAL(5, 2), nullable=True, comment='\\n        하락 성향 점수 (0~1)\\n        클러스터가 하락 패턴에 얼마나 치우쳐 있는지\\n        1.0: 완전한 하락 패턴 그룹\\n        0.0: 하락 패턴이 전혀 없음\\n        ')"
+        },
+        {
+          "name": "dominant_signal_types",
+          "definition": "Column(Text, nullable=True, comment='\\n        클러스터 내 주요 신호 타입들 (JSON 배열)\\n        예: [\"RSI\", \"MA\", \"BB\"] - RSI, 이동평균, 볼린저밴드가 주요 신호\\n        ')"
+        },
+        {
+          "name": "cluster_center",
+          "definition": "Column(Text, nullable=True, comment='\\n        클러스터 중심점 좌표 (JSON 배열)\\n        K-means 알고리즘에서 계산된 클러스터의 중심점\\n        예: [0.5, 1.0, 0.0, 0.8, 0.2, 1.0, 0.0, 0.3, 0.4, ...]\\n        \\n        각 차원의 의미:\\n        - 0: 지속시간 (정규화)\\n        - 1-6: 신호 타입별 원-핫 인코딩 (RSI, MA, BB, MACD, CROSS, VOLUME)\\n        - 7-8: 상승/하락 성향\\n        - 9-10: 시장 상황 (상승장/하락장)\\n        - 11-12: 시간적 특성 (요일/월)\\n        ')"
+        },
+        {
+          "name": "cluster_radius",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        클러스터 반경 (클러스터 내 패턴들의 평균 거리)\\n        작을수록 클러스터 내 패턴들이 유사함\\n        클수록 클러스터 내 패턴들이 다양함\\n        ')"
+        },
+        {
+          "name": "representative_patterns",
+          "definition": "Column(Text, nullable=True, comment='\\n        대표 패턴들의 ID 목록 (JSON 배열)\\n        클러스터를 가장 잘 나타내는 패턴들 (최대 5개)\\n        예: [123, 456, 789] - signal_patterns 테이블의 ID들\\n        ')"
+        },
+        {
+          "name": "pattern_examples",
+          "definition": "Column(Text, nullable=True, comment='\\n        패턴 예시 설명 (JSON 객체)\\n        사용자가 이해하기 쉬운 패턴 설명들\\n        예: {\\n            \"main_pattern\": \"RSI 과매도 후 20일선 돌파\",\\n            \"variations\": [\"RSI 30 이하 → MA20 상향돌파\", \"RSI 반등 + 거래량 증가\"],\\n            \"success_examples\": [\"2024-01-15: +3.2%\", \"2024-02-03: +2.8%\"]\\n        }\\n        ')"
+        },
+        {
+          "name": "clustering_algorithm",
+          "definition": "Column(String(20), default='kmeans', comment='\\n        사용된 클러스터링 알고리즘\\n        - kmeans: K-means 클러스터링\\n        - hierarchical: 계층적 클러스터링\\n        - dbscan: DBSCAN 클러스터링\\n        ')"
+        },
+        {
+          "name": "n_clusters_total",
+          "definition": "Column(Integer, nullable=False, comment='전체 클러스터 개수 (예: 6개 그룹으로 분류)')"
+        },
+        {
+          "name": "clustering_quality_score",
+          "definition": "Column(DECIMAL(5, 2), nullable=True, comment='\\n        클러스터링 품질 점수 (0~100)\\n        클러스터링이 얼마나 잘 되었는지 평가\\n        - 100: 완벽한 클러스터링 (그룹 간 명확한 구분)\\n        - 0: 매우 나쁜 클러스터링 (그룹 간 구분 불가)\\n        \\n        계산 요소:\\n        - 클러스터 내 응집도 (Intra-cluster cohesion)\\n        - 클러스터 간 분리도 (Inter-cluster separation)\\n        - 실루엣 점수 (Silhouette score)\\n        ')"
+        },
+        {
+          "name": "clustered_at",
+          "definition": "Column(DateTime, nullable=False, comment='클러스터링 실행 시점')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, default=func.now(), comment='레코드 생성 시점')"
+        },
+        {
+          "name": "updated_at",
+          "definition": "Column(DateTime, default=func.now(), onupdate=func.now(), comment='레코드 수정 시점')"
+        }
+      ]
+    },
+    {
+      "table": "signal_outcomes",
+      "source": "app/technical_analysis/infra/model/entity/signal_outcomes.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='결과 추적 고유 ID')"
+        },
+        {
+          "name": "signal_id",
+          "definition": "Column(BigInteger, ForeignKey('technical_signals.id', ondelete='CASCADE'), nullable=False, comment='추적 대상 신호의 ID (technical_signals 테이블 참조)')"
+        },
+        {
+          "name": "price_1h_after",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='신호 발생 1시간 후 가격')"
+        },
+        {
+          "name": "price_4h_after",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='신호 발생 4시간 후 가격')"
+        },
+        {
+          "name": "price_1d_after",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='신호 발생 1일(24시간) 후 가격')"
+        },
+        {
+          "name": "price_1w_after",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='신호 발생 1주일(7일) 후 가격')"
+        },
+        {
+          "name": "price_1m_after",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='신호 발생 1개월(30일) 후 가격')"
+        },
+        {
+          "name": "return_1h",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        1시간 후 수익률 (%)\\n        계산식: (1시간후가격 - 신호발생시가격) / 신호발생시가격 * 100\\n        예: +2.5 (2.5% 상승), -1.2 (-1.2% 하락)ㅁ\\n        ')"
+        },
+        {
+          "name": "return_4h",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='4시간 후 수익률 (%)')"
+        },
+        {
+          "name": "return_1d",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='1일 후 수익률 (%)')"
+        },
+        {
+          "name": "return_1w",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='1주일 후 수익률 (%)')"
+        },
+        {
+          "name": "return_1m",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='1개월 후 수익률 (%)')"
+        },
+        {
+          "name": "max_price_reached",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='\\n        신호 발생 후 도달한 최고 가격\\n        - 상승 신호의 경우: 얼마나 높이 올라갔는지 확인\\n        - 하락 신호의 경우: 반등이 얼마나 있었는지 확인\\n        ')"
+        },
+        {
+          "name": "min_price_reached",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='\\n        신호 발생 후 도달한 최저 가격\\n        - 상승 신호의 경우: 중간에 얼마나 떨어졌는지 확인\\n        - 하락 신호의 경우: 얼마나 낮게 떨어졌는지 확인\\n        ')"
+        },
+        {
+          "name": "max_return",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        최대 수익률 (%)\\n        신호 발생 후 가장 좋았을 때의 수익률\\n        예: 200일선 돌파 후 최대 +8.5%까지 올라갔다\\n        ')"
+        },
+        {
+          "name": "max_drawdown",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        최대 손실률 (%)\\n        신호 발생 후 가장 나빴을 때의 손실률 (음수)\\n        예: RSI 과매수 신호 후 최대 -5.2%까지 떨어졌다\\n        ')"
+        },
+        {
+          "name": "min_return",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='최소 수익률 (%) - 추적 기간 중 가장 낮은 수익률')"
+        },
+        {
+          "name": "is_successful_1h",
+          "definition": "Column(Boolean, nullable=True, comment='\\n        1시간 기준 성공 여부\\n        - 상승 신호: 1시간 후 가격이 올랐으면 True\\n        - 하락 신호: 1시간 후 가격이 떨어졌으면 True\\n        - 중립 신호: 특정 기준에 따라 판정\\n        ')"
+        },
+        {
+          "name": "is_successful_1d",
+          "definition": "Column(Boolean, nullable=True, comment='1일 기준 성공 여부')"
+        },
+        {
+          "name": "is_successful_1w",
+          "definition": "Column(Boolean, nullable=True, comment='1주일 기준 성공 여부')"
+        },
+        {
+          "name": "is_successful_1m",
+          "definition": "Column(Boolean, nullable=True, comment='1개월 기준 성공 여부')"
+        },
+        {
+          "name": "volatility_1d",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        1일간 변동성 (%)\\n        신호 발생 후 1일간 가격 변동의 표준편차\\n        높을수록 가격이 많이 흔들렸다는 의미\\n        ')"
+        },
+        {
+          "name": "volatility_1w",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='1주일간 변동성 (%)')"
+        },
+        {
+          "name": "trend_strength",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        추세 강도 점수 (0~100)\\n        신호 방향으로 얼마나 일관되게 움직였는지 측정\\n        100: 완벽한 일방향 움직임\\n        0: 완전한 횡보 또는 반대 방향 움직임\\n        ')"
+        },
+        {
+          "name": "last_updated_at",
+          "definition": "Column(DateTime, nullable=True, comment='마지막 업데이트 시점 (가격 데이터 수집 시점)')"
+        },
+        {
+          "name": "is_complete",
+          "definition": "Column(Boolean, default=False, comment='\\n        추적 완료 여부\\n        - False: 아직 추적 중 (1개월이 지나지 않음)\\n        - True: 추적 완료 (1개월 후 데이터까지 수집 완료)\\n        ')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, default=func.now(), comment='레코드 생성 시점')"
+        },
+        {
+          "name": "updated_at",
+          "definition": "Column(DateTime, default=func.now(), onupdate=func.now(), comment='레코드 수정 시점')"
+        }
+      ]
+    },
+    {
+      "table": "signal_patterns",
+      "source": "app/technical_analysis/infra/model/entity/signal_patterns.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='패턴 고유 ID')"
+        },
+        {
+          "name": "pattern_name",
+          "definition": "Column(String(100), nullable=False, comment='\\n        패턴 이름 (예시):\\n        - RSI_overbought_then_BB_upper: RSI 과매수 후 볼린저 상단 터치\\n        - MA200_breakout_with_volume: 200일선 돌파 + 거래량 급증\\n        - golden_cross_after_consolidation: 횡보 후 골든크로스\\n        - triple_bottom_reversal: 삼중 바닥 반전 패턴\\n        ')"
+        },
+        {
+          "name": "pattern_type",
+          "definition": "Column(String(20), nullable=False, comment='\\n        패턴 유형:\\n        - sequential: 순차적 패턴 (A → B → C)\\n        - concurrent: 동시 발생 패턴 (A + B + C)\\n        - leading: 선행 지표 패턴 (A → 시간 간격 → B)\\n        - reversal: 반전 패턴\\n        - continuation: 지속 패턴\\n        ')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(20), nullable=False, comment='패턴이 발생한 심볼')"
+        },
+        {
+          "name": "timeframe",
+          "definition": "Column(String(10), nullable=False, comment='패턴 분석 시간대')"
+        },
+        {
+          "name": "first_signal_id",
+          "definition": "Column(BigInteger, ForeignKey('technical_signals.id'), nullable=False, comment='첫 번째 신호 ID (패턴의 시작점)')"
+        },
+        {
+          "name": "second_signal_id",
+          "definition": "Column(BigInteger, ForeignKey('technical_signals.id'), nullable=True, comment='두 번째 신호 ID')"
+        },
+        {
+          "name": "third_signal_id",
+          "definition": "Column(BigInteger, ForeignKey('technical_signals.id'), nullable=True, comment='세 번째 신호 ID')"
+        },
+        {
+          "name": "fourth_signal_id",
+          "definition": "Column(BigInteger, ForeignKey('technical_signals.id'), nullable=True, comment='네 번째 신호 ID')"
+        },
+        {
+          "name": "fifth_signal_id",
+          "definition": "Column(BigInteger, ForeignKey('technical_signals.id'), nullable=True, comment='다섯 번째 신호 ID')"
+        },
+        {
+          "name": "pattern_start",
+          "definition": "Column(DateTime, nullable=False, comment='패턴 시작 시점 (첫 번째 신호 발생 시점)')"
+        },
+        {
+          "name": "pattern_end",
+          "definition": "Column(DateTime, nullable=False, comment='패턴 완성 시점 (마지막 신호 발생 시점)')"
+        },
+        {
+          "name": "pattern_duration_hours",
+          "definition": "Column(DECIMAL(8, 2), nullable=True, comment='\\n        패턴 지속 시간 (시간 단위)\\n        패턴 시작부터 완성까지 걸린 시간\\n        예: 2.5 (2시간 30분), 24.0 (1일), 168.0 (1주일)\\n        ')"
+        },
+        {
+          "name": "pattern_outcome_1h",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='패턴 완성 후 1시간 후 수익률 (%)')"
+        },
+        {
+          "name": "pattern_outcome_1d",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='패턴 완성 후 1일 후 수익률 (%)')"
+        },
+        {
+          "name": "pattern_outcome_1w",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='패턴 완성 후 1주일 후 수익률 (%)')"
+        },
+        {
+          "name": "max_favorable_move",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        패턴 방향으로 최대 움직임 (%)\\n        - 상승 패턴: 최대 상승률\\n        - 하락 패턴: 최대 하락률 (음수)\\n        ')"
+        },
+        {
+          "name": "max_adverse_move",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        패턴 반대 방향으로 최대 움직임 (%)\\n        - 상승 패턴: 최대 하락률 (음수)\\n        - 하락 패턴: 최대 상승률\\n        ')"
+        },
+        {
+          "name": "is_successful_1h",
+          "definition": "Column(Boolean, nullable=True, comment='1시간 기준 패턴 성공 여부')"
+        },
+        {
+          "name": "is_successful_1d",
+          "definition": "Column(Boolean, nullable=True, comment='1일 기준 패턴 성공 여부')"
+        },
+        {
+          "name": "is_successful_1w",
+          "definition": "Column(Boolean, nullable=True, comment='1주일 기준 패턴 성공 여부')"
+        },
+        {
+          "name": "confidence_score",
+          "definition": "Column(DECIMAL(5, 2), nullable=True, comment='\\n        패턴 신뢰도 점수 (0~100)\\n        - 100: 매우 강한 패턴 (높은 성공률)\\n        - 50: 중립적 패턴\\n        - 0: 매우 약한 패턴 (낮은 성공률)\\n        \\n        계산 요소:\\n        - 과거 동일 패턴의 성공률\\n        - 신호들 간의 시간 간격\\n        - 시장 상황과의 일치도\\n        - 거래량 등 부가 지표\\n        ')"
+        },
+        {
+          "name": "market_condition",
+          "definition": "Column(String(20), nullable=True, comment='\\n        패턴 발생 시 시장 상황\\n        - strong_uptrend: 강한 상승 추세\\n        - weak_uptrend: 약한 상승 추세\\n        - sideways: 횡보\\n        - weak_downtrend: 약한 하락 추세\\n        - strong_downtrend: 강한 하락 추세\\n        ')"
+        },
+        {
+          "name": "volatility_level",
+          "definition": "Column(String(10), nullable=True, comment='\\n        패턴 발생 시 변동성 수준\\n        - low: 낮은 변동성 (< 1% 일일 변동)\\n        - medium: 보통 변동성 (1-3% 일일 변동)\\n        - high: 높은 변동성 (> 3% 일일 변동)\\n        ')"
+        },
+        {
+          "name": "volume_profile",
+          "definition": "Column(String(20), nullable=True, comment='\\n        패턴 발생 시 거래량 프로필\\n        - increasing: 거래량 증가 중\\n        - decreasing: 거래량 감소 중\\n        - spike: 거래량 급증\\n        - normal: 평상시 수준\\n        ')"
+        },
+        {
+          "name": "pattern_description",
+          "definition": "Column(Text, nullable=True, comment='\\n        패턴에 대한 상세 설명 (JSON 형태)\\n        {\\n            \"signals\": [\"RSI 과매수\", \"볼린저 상단 터치\"],\\n            \"sequence\": \"RSI가 먼저 70을 돌파한 후 2시간 내에 볼린저 상단 터치\",\\n            \"market_context\": \"상승 추세 중 과열 신호\",\\n            \"expected_outcome\": \"단기 조정 예상\"\\n        }\\n        ')"
+        },
+        {
+          "name": "similar_patterns_count",
+          "definition": "Column(BigInteger, default=0, comment='과거 동일한 패턴 발생 횟수 (참고용)')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, default=func.now(), comment='패턴 레코드 생성 시점')"
+        },
+        {
+          "name": "updated_at",
+          "definition": "Column(DateTime, default=func.now(), onupdate=func.now(), comment='패턴 레코드 수정 시점')"
+        },
+        {
+          "name": "analyzed_at",
+          "definition": "Column(DateTime, nullable=True, comment='패턴 분석 완료 시점')"
+        }
+      ]
+    },
+    {
+      "table": "technical_signals",
+      "source": "app/technical_analysis/infra/model/entity/technical_signals.py",
+      "columns": [
+        {
+          "name": "id",
+          "definition": "Column(BigInteger, primary_key=True, autoincrement=True, comment='신호 고유 ID')"
+        },
+        {
+          "name": "symbol",
+          "definition": "Column(String(20), nullable=False, comment='심볼 (예: NQ=F, ^IXIC, AAPL)')"
+        },
+        {
+          "name": "signal_type",
+          "definition": "Column(String(50), nullable=False, comment='\\n        신호 타입 (예시):\\n        - MA20_breakout_up: 20일선 상향 돌파\\n        - MA200_breakout_down: 200일선 하향 이탈\\n        - RSI_overbought: RSI 과매수 (70 이상)\\n        - RSI_oversold: RSI 과매도 (30 이하)\\n        - BB_touch_upper: 볼린저 밴드 상단 터치\\n        - golden_cross: 골든크로스 (50일선이 200일선 상향돌파)\\n        - dead_cross: 데드크로스 (50일선이 200일선 하향이탈)\\n        ')"
+        },
+        {
+          "name": "timeframe",
+          "definition": "Column(String(10), nullable=False, comment='시간대 (1min, 15min, 1hour, 1day)')"
+        },
+        {
+          "name": "triggered_at",
+          "definition": "Column(DateTime, nullable=False, comment='신호 발생 시점 (UTC 기준)')"
+        },
+        {
+          "name": "current_price",
+          "definition": "Column(DECIMAL(12, 4), nullable=False, comment='신호 발생 시점의 현재 가격')"
+        },
+        {
+          "name": "indicator_value",
+          "definition": "Column(DECIMAL(12, 4), nullable=True, comment='\\n        신호와 관련된 지표값\\n        - 이동평균 신호: MA값 (예: 200일선 값)\\n        - RSI 신호: RSI값 (예: 72.5)\\n        - 볼린저밴드 신호: 상단/하단 밴드값\\n        ')"
+        },
+        {
+          "name": "signal_strength",
+          "definition": "Column(DECIMAL(8, 4), nullable=True, comment='\\n        신호의 강도 (%)\\n        - 이동평균 돌파: 돌파폭 (현재가 - MA값) / MA값 * 100\\n        - RSI: 과매수/과매도 정도 (70 이상이면 70에서 얼마나 벗어났는지)\\n        - 볼린저밴드: 밴드에서 얼마나 벗어났는지\\n        ')"
+        },
+        {
+          "name": "volume",
+          "definition": "Column(BigInteger, nullable=True, comment='신호 발생 시점의 거래량 (거래량 급증 여부 판단용)')"
+        },
+        {
+          "name": "market_condition",
+          "definition": "Column(String(20), nullable=True, comment='\\n        신호 발생 시점의 시장 상황\\n        - bullish: 상승장\\n        - bearish: 하락장  \\n        - sideways: 횡보장\\n        - volatile: 변동성 큰 상황\\n        ')"
+        },
+        {
+          "name": "additional_context",
+          "definition": "Column(Text, nullable=True, comment='\\n        추가 컨텍스트 정보 (JSON 형태)\\n        예: {\"prev_signals\": [\"RSI_overbought\"], \"market_news\": \"FOMC 발표\"}\\n        ')"
+        },
+        {
+          "name": "alert_sent",
+          "definition": "Column(Boolean, default=False, comment='텔레그램 알림 발송 여부')"
+        },
+        {
+          "name": "alert_sent_at",
+          "definition": "Column(DateTime, nullable=True, comment='알림 발송 시점')"
+        },
+        {
+          "name": "created_at",
+          "definition": "Column(DateTime, default=func.now(), comment='레코드 생성 시점')"
+        },
+        {
+          "name": "updated_at",
+          "definition": "Column(DateTime, default=func.now(), onupdate=func.now(), comment='레코드 수정 시점')"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+server:
+  port: ${PORT:8000}
+spring:
+  application:
+    name: finstage-market-data
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/finstage_market_data}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:}
+    hikari:
+      initialization-fail-timeout: -1
+  sql:
+    init:
+      mode: never
+springdoc:
+  swagger-ui:
+    path: /docs
+  api-docs:
+    path: /openapi.json
