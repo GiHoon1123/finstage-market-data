@@ -41,3 +41,7 @@ NaN/Infinity는 순수 계산에서는 IEEE 값으로 유지한다. HTTP JSON에
 ## 신호 조회의 기존 동작
 
 원본 by-symbol은 signal_type이 없으면 LIMIT/OFFSET 후 timeframe 필터를 적용하고, pagination.total은 기본 limit=100의 조회 결과를 센다. 이 순서와 상한도 보존해 테스트한다. to_dict는 0인 price/indicator/strength를 null로 내보내므로 보존한다. 이 동작의 개선은 이전 완료 뒤 별도 변경으로 다룬다.
+
+## 시세 요약
+
+최고가 기록은 최신 날짜가 아니라 가장 큰 price를 선택한다. previous_high/low는 함수명과 달리 최신 snapshot이 속한 당일의 값이므로 원본 조건을 유지한다. 기본 심볼은 SYMBOL_PRICE_MAP의 실제 두 지수(^IXIC, ^GSPC)다. get_current(include_details=true)의 price_summary에서는 이미 조회한 현재가를 재사용해 추가 Yahoo 호출을 줄인다.
